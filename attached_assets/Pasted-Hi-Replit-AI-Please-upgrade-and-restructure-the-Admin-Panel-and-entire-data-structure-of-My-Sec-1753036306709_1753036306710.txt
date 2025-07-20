@@ -1,0 +1,204 @@
+Hi Replit AI 👋
+
+Please upgrade and restructure the Admin Panel and entire data structure of “My Secret Web” according to the following detailed update plan.
+
+✅ Admin Panel – Section-Wise Improvements (New Structure & Logic)
+🔹 1. Dashboard Page
+Add a table with daily stats:
+
+Date
+
+Total Profiles
+
+Total Videos
+
+Total Albums
+
+Total Pictures
+
+These numbers should automatically count based on database entries (simulated or localStorage).
+
+🔹 2. Request Section
+This handles membership request tracking.
+
+Main Table:
+
+Date
+
+Viewer Name
+
+Contact Number
+
+Package Duration (3, 15, 30 days – show remaining time)
+
+Action column with 3-dot menu:
+
+View User Info (popup)
+
+Delete User
+
+Top-right button: All Requests
+
+Opens popup showing all user requests (table format):
+
+Date, User Name, Contact, Package, Accept / Reject buttons
+
+On Accept → add to main table
+
+On Reject → discard request
+
+After expiration (duration over), request auto-removes from list.
+
+🔹 3. Slideshow Section
+Keep it as is, but replace “Image URL” field with:
+
+File Upload field for image
+
+Image preview display
+
+Title, Subtitle, Order
+
+Admin should only upload — no manual URL.
+
+🔹 4. Profile Section
+Each profile is a hub for albums, videos, and pictures.
+
+Top-right: Add Profile (popup)
+
+Profile Name
+
+Date of Birth
+
+Gender
+
+Country
+
+Upload Profile Picture
+
+Submit button
+
+Table:
+
+Date
+
+Profile Name
+
+DOB
+
+Country
+
+Gender
+
+Total Album, Pictures, Videos (linked count)
+
+3-dot menu:
+
+View Profile
+
+Edit Profile
+
+Delete Profile
+
+🔹 5. Celebrity Section
+This section should be removed.
+
+Instead, homepage slideshow below will show public Profiles from Profile section.
+
+🔹 6. Album Section → Rename as Content Management
+Top-right button: Add Picture Album
+
+Fields:
+
+Album Name
+
+Select Profile (dropdown from existing profiles)
+
+Submit
+
+Main Table:
+
+Album Name
+
+Under Profile
+
+Picture Quantity
+
+3-dot menu with:
+
+Open → shows:
+
+Album name
+
+Profile name
+
+Picture Table: Image, Picture name, Delete
+
+Button: Add Picture (popup: image upload + description)
+
+Frontend: Albums should display grouped under each profile.
+
+🔹 7. Video Section
+Top-right: Add Video
+
+Fields:
+
+Video Title
+
+Select Profile (dropdown)
+
+Upload Video (MP4)
+
+Submit
+
+Table:
+
+Video Title
+
+Profile Name
+
+3-dot menu:
+
+Open Video (show player + info)
+
+Delete Video
+
+Frontend: Videos should also group under respective profiles.
+
+On video click: open video page showing:
+
+Video
+
+Description
+
+Like/Comment (dummy)
+
+🔹 8. Settings Section
+No change right now (optional: admin credentials, pricing update)
+
+✅ 🔄 Central System Logic
+All content (Albums, Pictures, Videos) MUST be linked to a Profile.
+
+User visiting profiles on frontend should see:
+
+Profile Info
+
+Tabs for Albums and Videos (only accessible based on access rules)
+
+Admin panel should fully reflect this link and show totals under Profile.
+
+✅ Tech Notes for You:
+Use Tailwind CSS + Shadcn UI for layout
+
+Use localStorage or simple fake DB for persistence
+
+Use modals/popups (not full page) for all Add/Edit actions
+
+Use clean table layout + icons for 3-dot action menus
+
+Use date/time utilities to auto-calculate expiry, today’s date, etc.
+
+📌 This is a complete backend-like restructure of the Admin Panel with a Profile-based content management system, and must replace the old flat structure.
+Please apply all above steps and ensure everything works together seamlessly.
+
+Thank you!
+

@@ -1,0 +1,116 @@
+Hi Replit AI 👋
+
+Please make the following important improvements and upgrades in the project "My Secret Web":
+
+✅ 1. Remove Image & Video URL Fields – Use Upload System Instead
+🔹 When adding or editing content (like slideshow, album, video, celebrity), remove any manual “Image URL” or “Video URL” fields.
+🔹 Instead, use a proper file upload system for:
+
+Image upload (JPEG/PNG)
+
+Video upload (MP4)
+
+🟩 Use a simulated upload handler (e.g., upload → store preview in local DB or local folder).
+
+✅ 2. Album System Improvement
+When user clicks an album, open a new page showing all images inside that album.
+
+🔧 In Admin Dashboard → Albums section, please add the following features:
+
+Album Title
+
+Album Price → Dropdown with:
+
+Free
+
+150 BDT / 250 BDT / 500 BDT
+
+$2 / $3 / $5
+
+Thumbnail Upload
+
+Add Contents button
+
+When clicked, allow:
+
+Multiple image upload (JPEG/PNG)
+
+Each with description field
+
+Allow at least 5–6 images per album
+
+View button to see how content will appear
+
+✅ 3. Video System Improvement
+When user clicks a video, open a dedicated video page showing:
+
+Video player (play uploaded MP4)
+
+Video Description
+
+Like, comment buttons (simulate only)
+
+Price label (or FREE badge if applicable)
+
+🔧 In Admin Dashboard → Videos section:
+
+Upload video files (MP4)
+
+Add thumbnail image
+
+Video Title
+
+Description
+
+Price (dropdown like albums)
+
+Save/Update/Delete options
+
+✅ 4. Profile System for Admin & User
+🔧 In Admin Panel → Profile Section, allow admin to create profiles with:
+
+Profile Name
+
+Date of Birth
+
+Gender
+
+Nationality
+
+Description
+
+Profile Picture (Upload)
+
+✅ After creating a profile:
+
+Admin can attach Albums and Videos to that profile
+
+✅ 5. User Side Profile View (Frontend)
+When any user visits a profile from Home/Celebrity page:
+
+Show profile information (name, dob, etc.)
+
+Tabs:
+
+Albums → show albums uploaded under this profile
+
+Videos → show videos from this profile
+
+Users can view & buy based on access permission
+
+✅ 6. General Instructions
+Everything should be fully responsive.
+
+Use Tailwind CSS + Shadcn UI.
+
+Use Framer Motion for smooth UI transitions.
+
+Use localStorage or JSON server for data persistence.
+
+Each Add/Edit form must use modal or drawer layout.
+
+📌 Please complete these improvements. All content must be upload-based with proper preview and UI.
+The whole system should be fully manageable by Admin without writing any URLs manually.
+
+Thanks!
+
