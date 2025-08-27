@@ -53,6 +53,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { MembershipRequest, Celebrity, Album as AlbumType, Video as VideoType, SlideshowImage, Profile } from "@shared/schema";
 import { uploadFile, validateImageFile, UploadedFile } from "@/lib/fileUpload";
 import { format } from "date-fns";
+import { AlbumImageModal } from "./AlbumImageModal";
 
 export function RestructuredAdminPanel() {
   const { user, logout } = useAuth();
@@ -68,6 +69,7 @@ export function RestructuredAdminPanel() {
   const [isAllRequestsOpen, setIsAllRequestsOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
   const [selectedAlbum, setSelectedAlbum] = useState<any>(null);
+  const [isAlbumImageModalOpen, setIsAlbumImageModalOpen] = useState(false);
   const [editingProfile, setEditingProfile] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
   const [uploadedImage, setUploadedImage] = useState<UploadedFile | null>(null);
@@ -345,7 +347,10 @@ export function RestructuredAdminPanel() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                          <DropdownMenuItem onClick={() => setSelectedAlbum(album)}>
+                          <DropdownMenuItem onClick={() => {
+                            setSelectedAlbum(album);
+                            setIsAlbumImageModalOpen(true);
+                          }}>
                             <Eye className="w-4 h-4 mr-2" />
                             Open Album
                           </DropdownMenuItem>
@@ -1502,6 +1507,13 @@ export function RestructuredAdminPanel() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Album Image Management Modal */}
+        <AlbumImageModal
+          isOpen={isAlbumImageModalOpen}
+          onClose={() => setIsAlbumImageModalOpen(false)}
+          album={selectedAlbum}
+        />
       </div>
     </div>
   );
