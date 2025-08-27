@@ -13,11 +13,12 @@ import {
   Plus, 
   X,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
 import { Album, AlbumImage, InsertAlbumImage } from "@shared/schema";
+import { uploadFile, validateImageFile, UploadedFile } from "@/lib/fileUpload";
 
 interface AlbumImageModalProps {
   isOpen: boolean;
@@ -30,7 +31,8 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Fetch album images
   const { data: albumImages = [], isLoading } = useQuery<AlbumImage[]>({
@@ -41,8 +43,11 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
   // Delete album image mutation
   const deleteImageMutation = useMutation({
     mutationFn: (imageId: number) =>
-      apiRequest(`/api/albums/images/${imageId}`, {
+      fetch(`/api/albums/images/${imageId}`, {
         method: "DELETE",
+      }).then(res => {
+        if (!res.ok) throw new Error('Failed to delete image');
+        return res.json();
       }),
     onSuccess: () => {
       toast({
@@ -64,9 +69,15 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
   // Add album image mutation
   const addImageMutation = useMutation({
     mutationFn: (imageData: InsertAlbumImage) =>
-      apiRequest(`/api/albums/${album?.id}/images`, {
+      fetch(`/api/albums/${album?.id}/images`, {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(imageData),
+      }).then(res => {
+        if (!res.ok) throw new Error('Failed to add image');
+        return res.json();
       }),
     onSuccess: () => {
       toast({
@@ -76,10 +87,11 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
       queryClient.invalidateQueries({ queryKey: ["/api/albums", album?.id, "images"] });
       queryClient.invalidateQueries({ queryKey: ["/api/albums"] });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Add image error:', error);
       toast({
-        title: "Error",
-        description: "Failed to add image",
+        title: "Upload Error",
+        description: error instanceof Error ? error.message : "Failed to add image to album",
         variant: "destructive",
       });
     },
@@ -89,30 +101,80 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
     if (!album || files.length === 0) return;
     
     setIsUploading(true);
-    const newUploadedFiles: string[] = [];
+    const successfulUploads: UploadedFile[] = [];
+    let totalFiles = files.length;
+    let validFiles = 0;
+    let uploadErrors = 0;
 
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        if (!file.type.startsWith('image/')) continue;
+        
+        // Validate file type and size
+        if (!validateImageFile(file)) {
+          uploadErrors++;
+          toast({
+            title: "Invalid File",
+            description: `${file.name} - Please upload a valid image file (JPG, JPEG, PNG, WEBP) under 10MB.`,
+            variant: "destructive",
+          });
+          continue;
+        }
 
-        // Create a simple image URL for demo purposes (in real app, you'd upload to cloud storage)
-        const imageUrl = URL.createObjectURL(file);
-        newUploadedFiles.push(imageUrl);
+        validFiles++;
 
-        const imageData: InsertAlbumImage = {
-          albumId: album.id,
-          imageUrl: imageUrl,
-          description: `Image ${albumImages.length + i + 1}`,
-          order: albumImages.length + i + 1,
-        };
+        try {
+          // Upload file using the existing upload system
+          const uploadedFile = await uploadFile(file);
+          successfulUploads.push(uploadedFile);
 
-        await addImageMutation.mutateAsync(imageData);
+          // Create album image entry
+          const imageData: InsertAlbumImage = {
+            albumId: album.id,
+            imageUrl: uploadedFile.url,
+            description: `Image ${albumImages.length + successfulUploads.length}`,
+            order: albumImages.length + successfulUploads.length,
+          };
+
+          await addImageMutation.mutateAsync(imageData);
+        } catch (error) {
+          uploadErrors++;
+          console.error('Upload error for file:', file.name, error);
+          toast({
+            title: "Upload Failed",
+            description: `Failed to upload ${file.name}. Please try again.`,
+            variant: "destructive",
+          });
+        }
       }
 
-      setUploadedFiles(prev => [...prev, ...newUploadedFiles]);
+      // Update uploaded files state
+      setUploadedFiles(prev => [...prev, ...successfulUploads]);
+
+      // Show success message
+      if (successfulUploads.length > 0) {
+        toast({
+          title: "Upload Successful",
+          description: `Successfully uploaded ${successfulUploads.length} image${successfulUploads.length > 1 ? 's' : ''} to the album.`,
+        });
+      }
+
+      // Show summary if there were issues
+      if (uploadErrors > 0) {
+        toast({
+          title: "Upload Summary",
+          description: `${successfulUploads.length} successful, ${uploadErrors} failed out of ${totalFiles} files.`,
+          variant: uploadErrors === totalFiles ? "destructive" : "default",
+        });
+      }
+
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error('General upload error:', error);
+      toast({
+        title: "Upload Error",
+        description: "An unexpected error occurred during upload. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsUploading(false);
     }
@@ -126,6 +188,26 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
+  };
+
+  // Drag and drop handlers
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleFileUpload(files);
+    }
   };
 
   if (!album) return null;
@@ -142,10 +224,24 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
 
         <div className="space-y-6">
           {/* Upload Section */}
-          <div className="flex items-center justify-between p-4 bg-green-900/20 rounded-lg border border-green-500/30">
+          <div 
+            className={`flex items-center justify-between p-4 rounded-lg border transition-all duration-200 ${
+              isDragging 
+                ? 'bg-green-800/40 border-green-400 border-dashed' 
+                : 'bg-green-900/20 border-green-500/30'
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
             <div>
               <h3 className="text-lg font-semibold text-green-300">Add New Images</h3>
-              <p className="text-sm text-green-300/70">Upload multiple images to this album</p>
+              <p className="text-sm text-green-300/70">
+                {isDragging 
+                  ? "Drop your images here..." 
+                  : "Upload multiple images or drag & drop"
+                }
+              </p>
             </div>
             <div className="flex gap-2">
               <input
@@ -160,7 +256,9 @@ export function AlbumImageModal({ isOpen, onClose, album }: AlbumImageModalProps
               <Button
                 onClick={handleUploadClick}
                 disabled={isUploading}
-                className="bg-green-600 hover:bg-green-700 text-white"
+                className={`bg-green-600 hover:bg-green-700 text-white transition-all ${
+                  isDragging ? 'scale-105' : ''
+                }`}
                 data-testid="button-upload-images"
               >
                 {isUploading ? (
