@@ -1,7 +1,6 @@
 import { Slideshow } from "@/components/Slideshow";
-import { CelebritySection } from "@/components/CelebritySection";
-import { AlbumSection } from "@/components/AlbumSection";
-import { VideoSection } from "@/components/VideoSection";
+import { ProfileSection } from "@/components/ProfileSection";
+import { ContentSection } from "@/components/ContentSection";
 import { Shield, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import logoImage from "@assets/A_casual_photo_of_Design_a_pro_1752865588870.png";
 
@@ -10,9 +9,8 @@ export function Home() {
     <div className="min-h-screen bg-background">
       <main className="space-y-12">
         <Slideshow />
-        <CelebritySection />
-        <AlbumSection />
-        <VideoSection />
+        <ProfileSection />
+        <ContentSection />
       </main>
 
       {/* Footer */}
