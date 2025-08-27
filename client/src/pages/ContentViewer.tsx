@@ -48,22 +48,10 @@ export function ContentViewer() {
     enabled: !!type && !!id,
   });
 
-  // Check access permissions
+  // Check access permissions - DISABLED FOR FREE ACCESS MODE
   useEffect(() => {
-    if (content && !isLoggedIn) {
-      setShowMembership(true);
-      return;
-    }
-
-    if (content && type === "celebrity" && !content.isFree && !hasValidMembership) {
-      setShowMembership(true);
-      return;
-    }
-
-    if (content && (type === "album" || type === "video") && !hasValidMembership) {
-      setShowMembership(true);
-      return;
-    }
+    // All content is now freely accessible
+    // Membership restrictions temporarily disabled
   }, [content, isLoggedIn, hasValidMembership, type]);
 
   // Video player controls
@@ -154,42 +142,11 @@ export function ContentViewer() {
     );
   }
 
-  // Check if user has access
-  const hasAccess = isLoggedIn && (
-    (type === "celebrity" && (content.isFree || hasValidMembership)) ||
-    ((type === "album" || type === "video") && hasValidMembership)
-  );
+  // Check if user has access - FREE ACCESS MODE ENABLED
+  const hasAccess = true; // All content is freely accessible
 
-  if (!hasAccess) {
-    return (
-      <>
-        <div className="min-h-screen bg-gray-50">
-          <Header />
-          <div className="container mx-auto px-4 py-8">
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-12 h-12 text-primary" />
-              </div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">Premium Content</h1>
-              <p className="text-gray-600 mb-8">
-                This content requires a valid membership to access. Please upgrade your membership to enjoy premium content.
-              </p>
-              <Button
-                onClick={() => setShowMembership(true)}
-                className="gradient-primary text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
-              >
-                Get Membership
-              </Button>
-            </div>
-          </div>
-        </div>
-        <MembershipModal 
-          isOpen={showMembership} 
-          onClose={() => setShowMembership(false)} 
-        />
-      </>
-    );
-  }
+  // Access denial screen removed - FREE ACCESS MODE
+  // All content is now freely accessible without restrictions
 
   return (
     <>

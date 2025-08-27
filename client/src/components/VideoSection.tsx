@@ -21,11 +21,7 @@ export function VideoSection() {
   });
 
   const handleVideoClick = (video: Video) => {
-    if (!isLoggedIn || !hasValidMembership) {
-      setShowMembership(true);
-      return;
-    }
-    // Navigate to video content
+    // FREE ACCESS MODE - All videos are accessible
     window.location.href = `/content/video/${video.id}`;
   };
 

@@ -21,11 +21,7 @@ export function AlbumSection() {
   });
 
   const handleAlbumClick = (album: Album) => {
-    if (!isLoggedIn || !hasValidMembership) {
-      setShowMembership(true);
-      return;
-    }
-    // Navigate to album content
+    // FREE ACCESS MODE - All albums are accessible
     window.location.href = `/content/album/${album.id}`;
   };
 

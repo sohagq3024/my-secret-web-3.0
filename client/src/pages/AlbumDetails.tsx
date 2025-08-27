@@ -55,7 +55,7 @@ export default function AlbumDetails() {
     );
   }
 
-  const isLocked = album.priceCategory !== 'free';
+  const isLocked = false; // FREE ACCESS MODE - All albums are unlocked
 
   return (
     <div className="min-h-screen bg-black text-white">

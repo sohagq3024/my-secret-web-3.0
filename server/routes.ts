@@ -30,14 +30,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      // Check if user has active membership (admins bypass this requirement)
-      let hasValidMembership = false;
-      if (user.role === "admin") {
-        hasValidMembership = true; // Admins always have access
-      } else {
-        const activeMembership = await storage.getActiveMembershipByUserId(user.id);
-        hasValidMembership = !!(activeMembership && activeMembership.expiresAt > new Date());
-      }
+      // FREE ACCESS MODE - All users have valid membership (temporary)
+      // Admins always maintain access, regular users get temporary free access
+      let hasValidMembership = true; // Universal free access enabled
 
       res.json({
         user: {
@@ -139,7 +134,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const activeMembership = await storage.getActiveMembershipByUserId(userId);
-      const hasValidMembership = activeMembership && activeMembership.expiresAt > new Date();
+      // FREE ACCESS MODE - All users have valid membership (temporary)
+      const hasValidMembership = true; // Universal free access enabled
       
       res.json({
         hasValidMembership,

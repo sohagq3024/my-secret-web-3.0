@@ -26,9 +26,8 @@ export function Slideshow() {
   }, [slides.length]);
 
   const handleGetStarted = () => {
-    if (!isLoggedIn || !hasValidMembership) {
-      setShowMembership(true);
-    }
+    // FREE ACCESS MODE - Portal is always accessible
+    // No membership required
   };
 
   if (isLoading || slides.length === 0) {

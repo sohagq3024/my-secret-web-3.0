@@ -46,7 +46,7 @@ export default function VideoDetails() {
     );
   }
 
-  const isLocked = video.priceCategory !== 'free';
+  const isLocked = false; // FREE ACCESS MODE - All videos are unlocked
 
   return (
     <div className="min-h-screen bg-black text-white">

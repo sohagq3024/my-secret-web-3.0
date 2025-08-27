@@ -35,18 +35,12 @@ export function ContentSection() {
   };
 
   const handleVideoClick = (video: Video) => {
-    if (!isLoggedIn || !hasValidMembership) {
-      setShowMembership(true);
-      return;
-    }
+    // FREE ACCESS MODE - All videos are accessible
     window.location.href = `/content/video/${video.id}`;
   };
 
   const handleAlbumClick = (album: Album) => {
-    if (!isLoggedIn || !hasValidMembership) {
-      setShowMembership(true);
-      return;
-    }
+    // FREE ACCESS MODE - All albums are accessible
     window.location.href = `/content/album/${album.id}`;
   };
 

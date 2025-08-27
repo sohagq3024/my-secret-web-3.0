@@ -17,11 +17,7 @@ export function CelebritySection() {
   });
 
   const handleCelebrityClick = (celebrity: Celebrity) => {
-    if (!celebrity.isFree && (!isLoggedIn || !hasValidMembership)) {
-      setShowMembership(true);
-      return;
-    }
-    // Navigate to celebrity content
+    // FREE ACCESS MODE - All celebrity content is accessible
     window.location.href = `/content/celebrity/${celebrity.id}`;
   };
 

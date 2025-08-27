@@ -92,15 +92,10 @@ export function Header() {
                       <Shield className="w-3 h-3 mr-1" />
                       ADMIN
                     </Badge>
-                  ) : hasValidMembership ? (
+                  ) : (
                     <Badge className="bg-green-600/30 text-green-100 border border-green-500/50 hover:bg-green-600/40">
                       <Crown className="w-3 h-3 mr-1" />
-                      PREMIUM
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className="border-yellow-500/50 text-yellow-300">
-                      <Lock className="w-3 h-3 mr-1" />
-                      No Access
+                      FREE ACCESS
                     </Badge>
                   )}
                 </div>
@@ -191,15 +186,10 @@ export function Header() {
                           <Shield className="w-3 h-3 mr-1" />
                           ADMIN
                         </Badge>
-                      ) : hasValidMembership ? (
+                      ) : (
                         <Badge className="bg-green-600/30 text-green-100 border border-green-500/50 ml-auto">
                           <Crown className="w-3 h-3 mr-1" />
-                          PREMIUM
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="border-yellow-500/50 text-yellow-300 ml-auto">
-                          <Lock className="w-3 h-3 mr-1" />
-                          No Access
+                          FREE ACCESS
                         </Badge>
                       )}
                     </div>
