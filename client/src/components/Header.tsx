@@ -21,7 +21,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
-  const { user, logout, membership } = useAuth();
+  const { user, isLoggedIn, isAdmin, hasValidMembership, logout } = useAuth();
 
   const openAuthModal = (mode: "login" | "register") => {
     setAuthMode(mode);
@@ -87,10 +87,15 @@ export function Header() {
               {/* Membership Status */}
               {user && (
                 <div className="hidden sm:flex items-center space-x-2">
-                  {membership ? (
+                  {isAdmin ? (
+                    <Badge className="bg-purple-600/30 text-purple-100 border border-purple-500/50 hover:bg-purple-600/40">
+                      <Shield className="w-3 h-3 mr-1" />
+                      ADMIN
+                    </Badge>
+                  ) : hasValidMembership ? (
                     <Badge className="bg-green-600/30 text-green-100 border border-green-500/50 hover:bg-green-600/40">
                       <Crown className="w-3 h-3 mr-1" />
-                      {membership.plan.replace('-', ' ').toUpperCase()}
+                      PREMIUM
                     </Badge>
                   ) : (
                     <Badge variant="outline" className="border-yellow-500/50 text-yellow-300">
@@ -181,10 +186,15 @@ export function Header() {
                     <div className="flex items-center space-x-2 px-3 py-2 cyber-border rounded-lg">
                       <User className="w-4 h-4 text-green-400" />
                       <span className="text-sm text-green-100">{user.firstName} {user.lastName}</span>
-                      {membership ? (
+                      {isAdmin ? (
+                        <Badge className="bg-purple-600/30 text-purple-100 border border-purple-500/50 ml-auto">
+                          <Shield className="w-3 h-3 mr-1" />
+                          ADMIN
+                        </Badge>
+                      ) : hasValidMembership ? (
                         <Badge className="bg-green-600/30 text-green-100 border border-green-500/50 ml-auto">
                           <Crown className="w-3 h-3 mr-1" />
-                          {membership.plan.replace('-', ' ').toUpperCase()}
+                          PREMIUM
                         </Badge>
                       ) : (
                         <Badge variant="outline" className="border-yellow-500/50 text-yellow-300 ml-auto">

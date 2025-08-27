@@ -30,9 +30,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      // Check if user has active membership
-      const activeMembership = await storage.getActiveMembershipByUserId(user.id);
-      const hasValidMembership = activeMembership && activeMembership.expiresAt > new Date();
+      // Check if user has active membership (admins bypass this requirement)
+      let hasValidMembership = false;
+      if (user.role === "admin") {
+        hasValidMembership = true; // Admins always have access
+      } else {
+        const activeMembership = await storage.getActiveMembershipByUserId(user.id);
+        hasValidMembership = !!(activeMembership && activeMembership.expiresAt > new Date());
+      }
 
       res.json({
         user: {

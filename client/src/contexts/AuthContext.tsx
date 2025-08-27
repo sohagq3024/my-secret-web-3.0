@@ -4,6 +4,7 @@ import { User } from "@shared/schema";
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  isAdmin: boolean;
   hasValidMembership: boolean;
   login: (user: User, hasValidMembership: boolean) => void;
   logout: () => void;
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         isLoggedIn: !!user,
+        isAdmin: !!user && user.role === "admin",
         hasValidMembership,
         login,
         logout,
