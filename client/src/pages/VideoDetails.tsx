@@ -21,12 +21,12 @@ export default function VideoDetails() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black p-4">
+      <div className="min-h-screen bg-background p-4">
         <div className="max-w-4xl mx-auto">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-800 rounded w-32"></div>
-            <div className="h-96 bg-gray-800 rounded"></div>
-            <div className="h-32 bg-gray-800 rounded"></div>
+            <div className="h-8 bg-muted rounded w-32"></div>
+            <div className="h-96 bg-muted rounded"></div>
+            <div className="h-32 bg-muted rounded"></div>
           </div>
         </div>
       </div>
@@ -35,9 +35,9 @@ export default function VideoDetails() {
 
   if (!video) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Video Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-4">Video Not Found</h1>
           <Button onClick={() => setLocation('/')} variant="outline">
             Go Home
           </Button>
@@ -49,9 +49,9 @@ export default function VideoDetails() {
   const isLocked = false; // FREE ACCESS MODE - All videos are unlocked
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-gray-800">
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
@@ -82,7 +82,7 @@ export default function VideoDetails() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Card className="bg-gray-900 border-gray-800 overflow-hidden">
+          <Card className="bg-card border-border overflow-hidden">
             <CardContent className="p-0">
               <div className="relative">
                 {isLocked ? (
@@ -139,7 +139,7 @@ export default function VideoDetails() {
               {video.title}
             </h1>
             
-            <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
               {video.duration && (
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
@@ -158,10 +158,10 @@ export default function VideoDetails() {
           </div>
 
           {/* Description */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-card border-border">
             <CardContent className="p-6">
               <h3 className="text-lg font-semibold text-green-400 mb-3">Description</h3>
-              <p className="text-gray-300 leading-relaxed">
+              <p className="text-foreground leading-relaxed">
                 {video.description}
               </p>
             </CardContent>
@@ -175,7 +175,7 @@ export default function VideoDetails() {
                   <Lock className="h-8 w-8 text-red-400 flex-shrink-0" />
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-red-400 mb-2">Premium Video</h3>
-                    <p className="text-gray-300 mb-4">
+                    <p className="text-foreground mb-4">
                       This video requires a subscription to watch. Get access to this and many more premium videos.
                     </p>
                     <div className="flex items-center gap-3">
@@ -193,7 +193,7 @@ export default function VideoDetails() {
           )}
 
           {/* Interactions */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-card border-border">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -215,10 +215,10 @@ export default function VideoDetails() {
           </Card>
 
           {/* Comments Section */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-card border-border">
             <CardContent className="p-6">
               <h3 className="text-lg font-semibold text-green-400 mb-4">Comments</h3>
-              <div className="text-center py-8 text-gray-400">
+              <div className="text-center py-8 text-muted-foreground">
                 <MessageCircle className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p>No comments yet. Be the first to comment!</p>
               </div>

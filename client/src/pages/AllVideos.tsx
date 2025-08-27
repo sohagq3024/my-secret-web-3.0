@@ -25,16 +25,16 @@ export function AllVideos() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="content-grid">
             {Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="bg-gray-200 rounded-xl h-64 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                <div className="h-8 bg-gray-200 rounded"></div>
+                <div className="bg-muted rounded-xl h-64 mb-4"></div>
+                <div className="h-4 bg-muted rounded mb-2"></div>
+                <div className="h-3 bg-muted rounded mb-4"></div>
+                <div className="h-8 bg-muted rounded"></div>
               </div>
             ))}
           </div>
@@ -45,7 +45,7 @@ export function AllVideos() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         
         <div className="container mx-auto px-4 py-8">
@@ -57,7 +57,7 @@ export function AllVideos() {
                   Back to Home
                 </Button>
               </Link>
-              <h1 className="text-3xl font-bold text-gray-800">All Videos</h1>
+              <h1 className="text-3xl font-bold text-foreground">All Videos</h1>
             </div>
             <Badge variant="outline" className="text-sm">
               {videos.length} videos
@@ -68,7 +68,7 @@ export function AllVideos() {
             {videos.map((video) => (
               <Card
                 key={video.id}
-                className="group cursor-pointer card-hover bg-white overflow-hidden"
+                className="group cursor-pointer card-hover bg-card overflow-hidden"
                 onClick={() => handleVideoClick(video)}
               >
                 <CardContent className="p-0">
@@ -100,8 +100,8 @@ export function AllVideos() {
                     )}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{video.title}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{video.description}</p>
+                    <h3 className="text-xl font-bold text-foreground mb-2">{video.title}</h3>
+                    <p className="text-muted-foreground mb-4 line-clamp-2">{video.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-2xl font-bold text-primary">${video.price}</span>
                       <Button
@@ -120,9 +120,9 @@ export function AllVideos() {
 
           {videos.length === 0 && (
             <div className="text-center py-16">
-              <VideoIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">No Videos Available</h3>
-              <p className="text-gray-600">Check back later for new content.</p>
+              <VideoIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">No Videos Available</h3>
+              <p className="text-muted-foreground">Check back later for new content.</p>
             </div>
           )}
         </div>

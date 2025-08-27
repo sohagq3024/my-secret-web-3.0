@@ -25,15 +25,15 @@ export function AllCelebrities() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="celebrity-grid">
             {Array.from({ length: 8 }).map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="aspect-square bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded w-3/4 mx-auto"></div>
+                <div className="aspect-square bg-muted rounded-lg mb-4"></div>
+                <div className="h-4 bg-muted rounded mb-2"></div>
+                <div className="h-3 bg-muted rounded w-3/4 mx-auto"></div>
               </div>
             ))}
           </div>
@@ -44,7 +44,7 @@ export function AllCelebrities() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         
         <div className="container mx-auto px-4 py-8">
@@ -56,7 +56,7 @@ export function AllCelebrities() {
                   Back to Home
                 </Button>
               </Link>
-              <h1 className="text-3xl font-bold text-gray-800">All Celebrities</h1>
+              <h1 className="text-3xl font-bold text-foreground">All Celebrities</h1>
             </div>
             <Badge variant="outline" className="text-sm">
               {celebrities.length} celebrities
@@ -67,7 +67,7 @@ export function AllCelebrities() {
             {celebrities.map((celebrity) => (
               <Card
                 key={celebrity.id}
-                className="group cursor-pointer card-hover bg-white border-0 shadow-lg"
+                className="group cursor-pointer card-hover bg-card border-0 shadow-lg"
                 onClick={() => handleCelebrityClick(celebrity)}
               >
                 <CardContent className="p-0">
@@ -94,12 +94,12 @@ export function AllCelebrities() {
                     </div>
                   </div>
                   <div className="p-4 text-center">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                    <h3 className="text-lg font-semibold text-foreground mb-1">
                       {celebrity.name}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-2">{celebrity.profession}</p>
+                    <p className="text-sm text-muted-foreground mb-2">{celebrity.profession}</p>
                     {celebrity.description && (
-                      <p className="text-xs text-gray-500 line-clamp-2">
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {celebrity.description}
                       </p>
                     )}

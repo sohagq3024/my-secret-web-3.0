@@ -25,16 +25,16 @@ export function AllAlbums() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="content-grid">
             {Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="bg-gray-200 rounded-xl h-64 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                <div className="h-8 bg-gray-200 rounded"></div>
+                <div className="bg-muted rounded-xl h-64 mb-4"></div>
+                <div className="h-4 bg-muted rounded mb-2"></div>
+                <div className="h-3 bg-muted rounded mb-4"></div>
+                <div className="h-8 bg-muted rounded"></div>
               </div>
             ))}
           </div>
@@ -45,7 +45,7 @@ export function AllAlbums() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         
         <div className="container mx-auto px-4 py-8">
@@ -57,7 +57,7 @@ export function AllAlbums() {
                   Back to Home
                 </Button>
               </Link>
-              <h1 className="text-3xl font-bold text-gray-800">All Albums</h1>
+              <h1 className="text-3xl font-bold text-foreground">All Albums</h1>
             </div>
             <Badge variant="outline" className="text-sm">
               {albums.length} albums
@@ -68,13 +68,13 @@ export function AllAlbums() {
             {albums.map((album) => (
               <Card
                 key={album.id}
-                className="group cursor-pointer card-hover bg-white overflow-hidden"
+                className="group cursor-pointer card-hover bg-card overflow-hidden"
                 onClick={() => handleAlbumClick(album)}
               >
                 <CardContent className="p-0">
                   <div className="relative">
                     <img
-                      src={album.imageUrl}
+                      src={album.thumbnailUrl}
                       alt={album.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -88,10 +88,10 @@ export function AllAlbums() {
                     )}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{album.title}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{album.description}</p>
+                    <h3 className="text-xl font-bold text-foreground mb-2">{album.title}</h3>
+                    <p className="text-muted-foreground mb-4 line-clamp-2">{album.description}</p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-500">
+                      <div className="flex items-center text-sm text-muted-foreground">
                         <Images className="w-4 h-4 mr-1" />
                         <span>{album.imageCount} images</span>
                       </div>
@@ -110,9 +110,9 @@ export function AllAlbums() {
 
           {albums.length === 0 && (
             <div className="text-center py-16">
-              <Images className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">No Albums Available</h3>
-              <p className="text-gray-600">Check back later for new content.</p>
+              <Images className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">No Albums Available</h3>
+              <p className="text-muted-foreground">Check back later for new content.</p>
             </div>
           )}
         </div>

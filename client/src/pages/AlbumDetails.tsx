@@ -26,14 +26,14 @@ export default function AlbumDetails() {
 
   if (albumLoading || imagesLoading) {
     return (
-      <div className="min-h-screen bg-black p-4">
+      <div className="min-h-screen bg-background p-4">
         <div className="max-w-6xl mx-auto">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-800 rounded w-32"></div>
-            <div className="h-64 bg-gray-800 rounded"></div>
+            <div className="h-8 bg-muted rounded w-32"></div>
+            <div className="h-64 bg-muted rounded"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-64 bg-gray-800 rounded"></div>
+                <div key={i} className="h-64 bg-muted rounded"></div>
               ))}
             </div>
           </div>
@@ -44,9 +44,9 @@ export default function AlbumDetails() {
 
   if (!album) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Album Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-4">Album Not Found</h1>
           <Button onClick={() => setLocation('/')} variant="outline">
             Go Home
           </Button>
@@ -58,9 +58,9 @@ export default function AlbumDetails() {
   const isLocked = false; // FREE ACCESS MODE - All albums are unlocked
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-gray-800">
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
@@ -94,7 +94,7 @@ export default function AlbumDetails() {
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Thumbnail */}
             <div className="lg:w-1/3">
-              <Card className="bg-gray-900 border-gray-800">
+              <Card className="bg-card border-border">
                 <CardContent className="p-0">
                   <div className="relative">
                     <ImagePreview
@@ -123,12 +123,12 @@ export default function AlbumDetails() {
                 <h1 className="text-3xl font-bold text-green-400 mb-2">
                   {album.title}
                 </h1>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-foreground leading-relaxed">
                   {album.description}
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Star className="h-4 w-4" />
                   <span>{album.imageCount} images</span>
@@ -150,7 +150,7 @@ export default function AlbumDetails() {
                       <Lock className="h-6 w-6 text-red-400" />
                       <div>
                         <h3 className="font-medium text-red-400">Premium Content</h3>
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-foreground">
                           Subscribe to access this album - {getPriceLabelFromCategory(album.priceCategory)}
                         </p>
                       </div>
@@ -196,7 +196,7 @@ export default function AlbumDetails() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <Card className="bg-gray-900 border-gray-800 overflow-hidden group hover:border-green-600 transition-colors">
+                    <Card className="bg-card border-border overflow-hidden group hover:border-green-600 transition-colors">
                       <CardContent className="p-0">
                         <div className="relative">
                           <ImagePreview
@@ -213,7 +213,7 @@ export default function AlbumDetails() {
                           
                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                             <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-300">
+                              <span className="text-sm text-foreground">
                                 {index + 1} of {images.length}
                               </span>
                               <div className="flex items-center gap-2">
@@ -227,7 +227,7 @@ export default function AlbumDetails() {
                         
                         {image.description && (
                           <div className="p-3">
-                            <p className="text-sm text-gray-300">
+                            <p className="text-sm text-foreground">
                               {image.description}
                             </p>
                           </div>
@@ -238,9 +238,9 @@ export default function AlbumDetails() {
                 ))}
             </motion.div>
           ) : (
-            <Card className="bg-gray-900 border-gray-800">
+            <Card className="bg-card border-border">
               <CardContent className="p-12 text-center">
-                <div className="text-gray-400">
+                <div className="text-muted-foreground">
                   <Star className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <h3 className="text-lg font-medium mb-2">No Images Yet</h3>
                   <p className="text-sm">This album doesn't have any images yet.</p>

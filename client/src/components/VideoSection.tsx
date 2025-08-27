@@ -27,15 +27,15 @@ export function VideoSection() {
 
   if (isLoading) {
     return (
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="content-grid">
             {Array.from({ length: 3 }).map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="bg-gray-200 rounded-xl h-64 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                <div className="h-8 bg-gray-200 rounded"></div>
+                <div className="bg-muted rounded-xl h-64 mb-4"></div>
+                <div className="h-4 bg-muted rounded mb-2"></div>
+                <div className="h-3 bg-muted rounded mb-4"></div>
+                <div className="h-8 bg-muted rounded"></div>
               </div>
             ))}
           </div>
@@ -46,10 +46,10 @@ export function VideoSection() {
 
   return (
     <>
-      <section id="videos" className="py-16 bg-white">
+      <section id="videos" className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
-            <h2 className="text-4xl font-bold text-gray-800">Premium Videos</h2>
+            <h2 className="text-4xl font-bold text-foreground">Premium Videos</h2>
             <Link href="/videos">
               <Button variant="ghost" className="text-primary hover:text-primary-dark font-semibold">
                 See All <ArrowRight className="ml-2 w-4 h-4" />
@@ -61,7 +61,7 @@ export function VideoSection() {
             {videos.map((video) => (
               <Card
                 key={video.id}
-                className="group cursor-pointer card-hover bg-white overflow-hidden"
+                className="group cursor-pointer card-hover bg-card overflow-hidden"
                 onClick={() => handleVideoClick(video)}
               >
                 <CardContent className="p-0">
@@ -88,8 +88,8 @@ export function VideoSection() {
                     )}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{video.title}</h3>
-                    <p className="text-gray-600 mb-4">{video.description}</p>
+                    <h3 className="text-xl font-bold text-card-foreground mb-2">{video.title}</h3>
+                    <p className="text-muted-foreground mb-4">{video.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-2xl font-bold text-primary">${video.price}</span>
                       <Button

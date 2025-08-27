@@ -33,12 +33,12 @@ export default function ProfileDetails() {
 
   if (profileLoading) {
     return (
-      <div className="min-h-screen bg-black p-4">
+      <div className="min-h-screen bg-background p-4">
         <div className="max-w-6xl mx-auto">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-800 rounded w-32"></div>
-            <div className="h-64 bg-gray-800 rounded"></div>
-            <div className="h-96 bg-gray-800 rounded"></div>
+            <div className="h-8 bg-muted rounded w-32"></div>
+            <div className="h-64 bg-muted rounded"></div>
+            <div className="h-96 bg-muted rounded"></div>
           </div>
         </div>
       </div>
@@ -47,9 +47,9 @@ export default function ProfileDetails() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Profile Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-4">Profile Not Found</h1>
           <Button onClick={() => setLocation('/')} variant="outline">
             Go Home
           </Button>
@@ -59,9 +59,9 @@ export default function ProfileDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-gray-800">
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <Button
             variant="ghost"
@@ -81,7 +81,7 @@ export default function ProfileDetails() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-card border-border">
             <CardContent className="p-8">
               <div className="flex flex-col md:flex-row gap-6">
                 {/* Profile Image */}
@@ -110,7 +110,7 @@ export default function ProfileDetails() {
                     <h1 className="text-3xl font-bold text-green-400 mb-2">
                       {profile.name}
                     </h1>
-                    <p className="text-xl text-gray-300 mb-4">
+                    <p className="text-xl text-foreground mb-4">
                       {profile.profession}
                     </p>
                   </div>
@@ -118,19 +118,19 @@ export default function ProfileDetails() {
                   {/* Profile Details */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     {profile.dateOfBirth && (
-                      <div className="flex items-center gap-2 text-gray-400">
+                      <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar className="h-4 w-4" />
                         <span>Born: {profile.dateOfBirth}</span>
                       </div>
                     )}
                     {profile.gender && (
-                      <div className="flex items-center gap-2 text-gray-400">
+                      <div className="flex items-center gap-2 text-muted-foreground">
                         <User className="h-4 w-4" />
                         <span>Gender: {profile.gender}</span>
                       </div>
                     )}
                     {profile.nationality && (
-                      <div className="flex items-center gap-2 text-gray-400">
+                      <div className="flex items-center gap-2 text-muted-foreground">
                         <Globe className="h-4 w-4" />
                         <span>Nationality: {profile.nationality}</span>
                       </div>
@@ -141,7 +141,7 @@ export default function ProfileDetails() {
                   {profile.description && (
                     <div>
                       <h3 className="text-lg font-semibold text-green-400 mb-2">About</h3>
-                      <p className="text-gray-300 leading-relaxed">
+                      <p className="text-foreground leading-relaxed">
                         {profile.description}
                       </p>
                     </div>
@@ -153,13 +153,13 @@ export default function ProfileDetails() {
                       <div className="text-xl font-bold text-green-400">
                         {albums?.length || 0}
                       </div>
-                      <div className="text-sm text-gray-400">Albums</div>
+                      <div className="text-sm text-muted-foreground">Albums</div>
                     </div>
                     <div className="text-center">
                       <div className="text-xl font-bold text-green-400">
                         {videos?.length || 0}
                       </div>
-                      <div className="text-sm text-gray-400">Videos</div>
+                      <div className="text-sm text-muted-foreground">Videos</div>
                     </div>
                   </div>
                 </div>
@@ -198,7 +198,7 @@ export default function ProfileDetails() {
                       transition={{ delay: 0.1 }}
                     >
                       <Card 
-                        className="bg-gray-900 border-gray-800 overflow-hidden group hover:border-green-600 transition-colors cursor-pointer"
+                        className="bg-card border-border overflow-hidden group hover:border-green-600 transition-colors cursor-pointer"
                         onClick={() => setLocation(`/album/${album.id}`)}
                       >
                         <CardContent className="p-0">
@@ -222,7 +222,7 @@ export default function ProfileDetails() {
                             </div>
                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
                               <div className="flex items-center justify-between text-sm">
-                                <span className="text-gray-300">
+                                <span className="text-foreground">
                                   {album.imageCount} images
                                 </span>
                                 {album.isFeatured && (
@@ -235,7 +235,7 @@ export default function ProfileDetails() {
                             <h3 className="font-semibold text-white mb-2 group-hover:text-green-400 transition-colors">
                               {album.title}
                             </h3>
-                            <p className="text-sm text-gray-400 line-clamp-2">
+                            <p className="text-sm text-muted-foreground line-clamp-2">
                               {album.description}
                             </p>
                           </div>
@@ -245,10 +245,10 @@ export default function ProfileDetails() {
                   ))}
                 </div>
               ) : (
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-card border-border">
                   <CardContent className="p-12 text-center">
-                    <Image className="h-12 w-12 mx-auto mb-4 text-gray-400 opacity-50" />
-                    <h3 className="text-lg font-medium text-gray-400 mb-2">No Albums</h3>
+                    <Image className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                    <h3 className="text-lg font-medium text-muted-foreground mb-2">No Albums</h3>
                     <p className="text-sm text-gray-500">This profile doesn't have any albums yet.</p>
                   </CardContent>
                 </Card>
@@ -267,7 +267,7 @@ export default function ProfileDetails() {
                       transition={{ delay: 0.1 }}
                     >
                       <Card 
-                        className="bg-gray-900 border-gray-800 overflow-hidden group hover:border-green-600 transition-colors cursor-pointer"
+                        className="bg-card border-border overflow-hidden group hover:border-green-600 transition-colors cursor-pointer"
                         onClick={() => setLocation(`/video/${video.id}`)}
                       >
                         <CardContent className="p-0">
@@ -309,7 +309,7 @@ export default function ProfileDetails() {
                             <h3 className="font-semibold text-white mb-2 group-hover:text-green-400 transition-colors">
                               {video.title}
                             </h3>
-                            <p className="text-sm text-gray-400 line-clamp-2">
+                            <p className="text-sm text-muted-foreground line-clamp-2">
                               {video.description}
                             </p>
                           </div>
@@ -319,10 +319,10 @@ export default function ProfileDetails() {
                   ))}
                 </div>
               ) : (
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-card border-border">
                   <CardContent className="p-12 text-center">
-                    <Play className="h-12 w-12 mx-auto mb-4 text-gray-400 opacity-50" />
-                    <h3 className="text-lg font-medium text-gray-400 mb-2">No Videos</h3>
+                    <Play className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                    <h3 className="text-lg font-medium text-muted-foreground mb-2">No Videos</h3>
                     <p className="text-sm text-gray-500">This profile doesn't have any videos yet.</p>
                   </CardContent>
                 </Card>
