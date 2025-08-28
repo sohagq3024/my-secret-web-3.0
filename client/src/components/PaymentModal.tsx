@@ -101,11 +101,11 @@ export function PaymentModal({ isOpen, onClose, selectedPlan, onSuccess }: Payme
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-sm">
         {!showForm && !showSuccess ? (
           <>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800">
+              <DialogTitle className="text-lg font-bold text-gray-800">
                 Payment Method
               </DialogTitle>
             </DialogHeader>
@@ -139,7 +139,7 @@ export function PaymentModal({ isOpen, onClose, selectedPlan, onSuccess }: Payme
         ) : showForm ? (
           <>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800">
+              <DialogTitle className="text-lg font-bold text-gray-800">
                 Payment Details
               </DialogTitle>
             </DialogHeader>
@@ -209,7 +209,7 @@ export function PaymentModal({ isOpen, onClose, selectedPlan, onSuccess }: Payme
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800 text-center">
+              <DialogTitle className="text-lg font-bold text-gray-800 text-center">
                 Payment Successful!
               </DialogTitle>
             </DialogHeader>

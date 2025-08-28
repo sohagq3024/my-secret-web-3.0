@@ -120,9 +120,9 @@ export function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthModalProp
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md cyber-border bg-gray-900/95 backdrop-blur-xl border border-green-500/30">
+        <DialogContent className="sm:max-w-sm cyber-border bg-gray-900/95 backdrop-blur-xl border border-green-500/30">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-center bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
+            <DialogTitle className="text-lg font-bold text-center bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
               {mode === "login" ? (
                 <div className="flex items-center justify-center space-x-2">
                   <LogIn className="w-6 h-6 text-green-400" />
