@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { 
   Shield, 
   Menu, 
@@ -10,17 +11,24 @@ import {
   LogOut, 
   Crown,
   Lock,
-  Unlock
+  Unlock,
+  Search,
+  Loader2
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Profile, Album, Video } from "@shared/schema";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
 import logoImage from "@assets/A_casual_photo_of_Design_a_pro_1752865588870.png";
 
 export function Header() {
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const { user, isLoggedIn, isAdmin, hasValidMembership, logout } = useAuth();
 
   const openAuthModal = (mode: "login" | "register") => {
@@ -35,10 +43,92 @@ export function Header() {
 
   const navigation = [
     { href: "/", label: "Home", icon: "🏠" },
-    { href: "/celebrities", label: "Celebrities", icon: "⭐" },
-    { href: "/albums", label: "Albums", icon: "📸" },
-    { href: "/videos", label: "Videos", icon: "🎬" },
+    { href: "/profiles", label: "Profile", icon: "👤" },
+    { href: "/albums", label: "Album", icon: "📸" },
+    { href: "/videos", label: "Video", icon: "🎬" },
   ];
+
+  // Fetch data for search
+  const { data: profiles = [] } = useQuery<Profile[]>({
+    queryKey: ["/api/profiles"],
+  });
+  const { data: albums = [] } = useQuery<Album[]>({
+    queryKey: ["/api/albums"],
+  });
+  const { data: videos = [] } = useQuery<Video[]>({
+    queryKey: ["/api/videos"],
+  });
+
+  // Search functionality
+  const searchResults = useMemo(() => {
+    if (!searchQuery || searchQuery.length < 2) return [];
+
+    const query = searchQuery.toLowerCase();
+    const results: Array<{id: string; title: string; type: string; href: string}> = [];
+
+    // Search profiles
+    profiles.forEach(profile => {
+      if (profile.name.toLowerCase().includes(query)) {
+        results.push({
+          id: `profile-${profile.id}`,
+          title: profile.name,
+          type: 'Profile',
+          href: `/profile/${profile.id}`
+        });
+      }
+    });
+
+    // Search albums
+    albums.forEach(album => {
+      if (album.title.toLowerCase().includes(query)) {
+        results.push({
+          id: `album-${album.id}`,
+          title: album.title,
+          type: 'Album',
+          href: `/album/${album.id}`
+        });
+      }
+    });
+
+    // Search videos
+    videos.forEach(video => {
+      if (video.title.toLowerCase().includes(query)) {
+        results.push({
+          id: `video-${video.id}`,
+          title: video.title,
+          type: 'Video',
+          href: `/video/${video.id}`
+        });
+      }
+    });
+
+    return results.slice(0, 8); // Limit to 8 results
+  }, [searchQuery, profiles, albums, videos]);
+
+  // Handle search input
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowSearchResults(value.length >= 2);
+  };
+
+  const handleSearchResultClick = (href: string) => {
+    navigate(href);
+    setSearchQuery("");
+    setShowSearchResults(false);
+  };
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -64,7 +154,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
+            <nav className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
                 <Link key={item.href} href={item.href}>
                   <Button
@@ -81,6 +171,55 @@ export function Header() {
                 </Link>
               ))}
             </nav>
+
+            {/* Search Bar */}
+            <div className="hidden md:flex items-center relative" ref={searchRef}>
+              <div className="relative w-80">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 w-4 h-4" />
+                <Input
+                  placeholder="Search profiles, albums, videos..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="pl-10 bg-background/50 border-green-500/30 text-green-100 placeholder-green-400/70 focus:border-green-400/50 focus:ring-green-400/20"
+                  data-testid="search-input"
+                />
+                
+                {/* Search Results Dropdown */}
+                {showSearchResults && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-xl border border-green-500/30 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto">
+                    {searchResults.length > 0 ? (
+                      <div className="py-2">
+                        <div className="px-4 py-2 text-xs text-green-400/70 border-b border-green-500/20">
+                          Search Results ({searchResults.length})
+                        </div>
+                        {searchResults.map((result) => (
+                          <button
+                            key={result.id}
+                            onClick={() => handleSearchResultClick(result.href)}
+                            className="w-full px-4 py-3 text-left hover:bg-green-600/20 transition-colors flex items-center justify-between group"
+                            data-testid={`search-result-${result.type.toLowerCase()}-${result.id.split('-')[1]}`}
+                          >
+                            <div className="flex flex-col">
+                              <span className="text-green-100 group-hover:text-green-50">{result.title}</span>
+                              <span className="text-xs text-green-400/70">{result.type}</span>
+                            </div>
+                            <span className="text-green-400/50 text-xs group-hover:text-green-400">
+                              {result.type === 'Profile' && '👤'}
+                              {result.type === 'Album' && '📸'}
+                              {result.type === 'Video' && '🎬'}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="px-4 py-8 text-center text-green-400/70">
+                        No results found for "{searchQuery}"
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
 
             {/* User Section */}
             <div className="flex items-center space-x-4">
@@ -149,7 +288,7 @@ export function Header() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 variant="ghost"
                 size="sm"
-                className="md:hidden text-green-300 hover:text-green-100 hover:bg-green-600/20"
+                className="lg:hidden text-green-300 hover:text-green-100 hover:bg-green-600/20"
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </Button>
@@ -158,7 +297,45 @@ export function Header() {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden py-4 border-t border-green-500/30">
+            <div className="lg:hidden py-4 border-t border-green-500/30">
+              {/* Mobile Search */}
+              <div className="px-4 mb-4 md:hidden">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 w-4 h-4" />
+                  <Input
+                    placeholder="Search profiles, albums, videos..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className="pl-10 bg-background/50 border-green-500/30 text-green-100 placeholder-green-400/70 focus:border-green-400/50 focus:ring-green-400/20"
+                  />
+                </div>
+                
+                {/* Mobile Search Results */}
+                {showSearchResults && searchResults.length > 0 && (
+                  <div className="mt-2 bg-background/95 border border-green-500/30 rounded-lg max-h-60 overflow-y-auto">
+                    {searchResults.map((result) => (
+                      <button
+                        key={result.id}
+                        onClick={() => {
+                          handleSearchResultClick(result.href);
+                          setIsMenuOpen(false);
+                        }}
+                        className="w-full px-3 py-2 text-left hover:bg-green-600/20 transition-colors flex items-center justify-between"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-green-100 text-sm">{result.title}</span>
+                          <span className="text-xs text-green-400/70">{result.type}</span>
+                        </div>
+                        <span className="text-green-400/50 text-xs">
+                          {result.type === 'Profile' && '👤'}
+                          {result.type === 'Album' && '📸'}
+                          {result.type === 'Video' && '🎬'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <div className="flex flex-col space-y-2">
                 {navigation.map((item) => (
                   <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>

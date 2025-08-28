@@ -7,7 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Header } from "@/components/Header";
 import NotFound from "@/pages/not-found";
 import { Home } from "@/pages/Home";
-import { AllCelebrities } from "@/pages/AllCelebrities";
+import { AllProfiles } from "@/pages/AllProfiles";
 import { AllAlbums } from "@/pages/AllAlbums";
 import { AllVideos } from "@/pages/AllVideos";
 import { ContentViewer } from "@/pages/ContentViewer";
@@ -24,7 +24,7 @@ function Router() {
       <main className="pt-16">
         <Switch>
           <Route path="/" component={Home} />
-          <Route path="/celebrities" component={AllCelebrities} />
+          <Route path="/profiles" component={AllProfiles} />
           <Route path="/albums" component={AllAlbums} />
           <Route path="/videos" component={AllVideos} />
           <Route path="/admin">
