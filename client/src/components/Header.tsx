@@ -5,8 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { 
   Shield, 
-  Menu, 
-  X, 
   User, 
   LogOut, 
   Crown,
@@ -23,7 +21,6 @@ import logoImage from "@assets/A_casual_photo_of_Design_a_pro_1752865588870.png"
 
 export function Header() {
   const [location, navigate] = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,7 +35,6 @@ export function Header() {
 
   const handleLogout = () => {
     logout();
-    setIsMenuOpen(false);
   };
 
   const navigation = [
@@ -116,12 +112,6 @@ export function Header() {
     navigate(href);
     setSearchQuery("");
     setShowSearchResults(false);
-    setIsMenuOpen(false); // Close menu after navigation
-  };
-
-  const handleNavigation = (href: string) => {
-    navigate(href);
-    setIsMenuOpen(false); // Ensure menu closes on navigation
   };
 
   // Close search results when clicking outside
@@ -271,238 +261,51 @@ export function Header() {
                 </div>
               )}
 
-              {/* Mobile Menu Button */}
-              {/* Hamburger Menu - Always Visible */}
-              <Button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                variant="ghost"
-                size="sm"
-                className="text-green-300 hover:text-green-100 hover:bg-green-600/20 transition-all duration-300"
-                data-testid="hamburger-menu"
-              >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </Button>
             </div>
           </div>
 
         </div>
 
-        {/* Full Screen Pop-up Menu Overlay */}
-        {isMenuOpen && (
-          <>
-            {/* Background Overlay - Higher z-index */}
-            <div 
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99998] animate-in fade-in duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            />
-            
-            {/* Pop-up Menu Panel - Highest z-index */}
-            <div className="fixed top-0 right-0 h-full w-full max-w-md bg-background/98 backdrop-blur-xl border-l border-green-500/30 shadow-2xl z-[99999] animate-in slide-in-from-right duration-300">
-              {/* Menu Header */}
-              <div className="flex items-center justify-between p-6 border-b border-green-500/20">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-lg bg-green-600/20 border border-green-500/30 flex items-center justify-center">
-                    <Menu className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-green-100">Menu</div>
-                    <div className="text-xs text-green-400/70">Navigation & Settings</div>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => setIsMenuOpen(false)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-green-300 hover:text-green-100 hover:bg-green-600/20 w-10 h-10 rounded-full"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-
-              {/* Menu Content */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-8">
-                {/* Mobile Search - Only show on mobile */}
-                <div className="md:hidden">
-                  <div className="text-xs text-green-400/70 mb-3 uppercase tracking-wider flex items-center">
-                    <Search className="w-3 h-3 mr-2" />
-                    Search
-                  </div>
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
-                    <Input
-                      placeholder="Search profiles, albums, videos..."
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                      className="pl-12 pr-4 py-3 bg-black/40 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl w-full"
-                    />
-                  </div>
-                  
-                  {/* Mobile Search Results */}
-                  {showSearchResults && searchResults.length > 0 && (
-                    <div className="mt-2 bg-black/90 border border-green-500/20 rounded-xl max-h-60 overflow-y-auto">
-                      {searchResults.map((result) => (
-                        <button
-                          key={result.id}
-                          onClick={() => {
-                            handleSearchResultClick(result.href);
-                            setIsMenuOpen(false);
-                          }}
-                          className="w-full px-3 py-2 text-left hover:bg-green-600/10 transition-colors flex items-center justify-between"
-                        >
-                          <div className="flex flex-col">
-                            <span className="text-green-100 text-sm">{result.title}</span>
-                            <span className="text-xs text-green-400/60">{result.type}</span>
-                          </div>
-                          <div className="text-green-400/40 text-xs">
-                            {result.type}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Navigation Section */}
-                <div>
-                  <div className="text-xs text-green-400/70 mb-4 uppercase tracking-wider flex items-center">
-                    <div className="w-3 h-3 rounded bg-green-600/30 mr-2"></div>
-                    Navigation
-                  </div>
-                  <div className="space-y-2">
-                    {navigation.map((item, index) => (
-                      <button
-                        key={`nav-${item.href}-${index}`}
-                        onClick={() => handleNavigation(item.href)}
-                        className={`w-full justify-start font-medium py-4 px-4 text-base transition-all duration-300 rounded-lg flex items-center ${
-                          location === item.href
-                            ? "bg-green-600/30 text-green-100 border border-green-500/50 shadow-lg"
-                            : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
-                        }`}
-                        style={{animationDelay: `${index * 100}ms`}}
-                        data-testid={`nav-${item.label.toLowerCase()}`}
-                      >
-                        <div className="flex items-center">
-                          <div className={`w-2 h-2 rounded-full mr-3 ${
-                            location === item.href ? "bg-green-400" : "bg-green-500/30"
-                          }`}></div>
-                          {item.label}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* User Account Section */}
-                {user ? (
-                  <div>
-                    <div className="text-xs text-green-400/70 mb-4 uppercase tracking-wider flex items-center">
-                      <User className="w-3 h-3 mr-2" />
-                      Account
-                    </div>
-                    
-                    {/* User Profile Card */}
-                    <div className="bg-green-600/10 rounded-xl p-4 border border-green-500/20 mb-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 rounded-full bg-green-600/20 border border-green-500/30 flex items-center justify-center">
-                          <User className="w-6 h-6 text-green-400" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-base font-semibold text-green-100">{user.firstName} {user.lastName}</div>
-                          <div className="text-sm text-green-400/70">{user.email}</div>
-                        </div>
-                        {isAdmin ? (
-                          <Badge className="bg-purple-600/40 text-purple-100 border border-purple-500/50">
-                            <Shield className="w-3 h-3 mr-1" />
-                            ADMIN
-                          </Badge>
-                        ) : (
-                          <Badge className="bg-green-600/40 text-green-100 border border-green-500/50">
-                            <Crown className="w-3 h-3 mr-1" />
-                            MEMBER
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      {user.role === "admin" && (
-                        <button
-                          onClick={() => handleNavigation("/admin")}
-                          className="w-full justify-start py-4 text-base bg-purple-600/30 text-purple-100 border border-purple-500/50 rounded-lg hover:bg-purple-600/40 transition-all duration-300 flex items-center"
-                          data-testid="admin-panel"
-                        >
-                          <Shield className="w-5 h-5 mr-3" />
-                          Admin Panel
-                        </button>
-                      )}
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          setIsMenuOpen(false);
-                        }}
-                        className="w-full justify-start border border-red-500/50 text-red-300 hover:bg-red-600/20 hover:border-red-400/50 py-4 text-base rounded-lg transition-all duration-300 flex items-center"
-                        data-testid="logout-button"
-                      >
-                        <LogOut className="w-5 h-5 mr-3" />
-                        Logout
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="text-xs text-green-400/70 mb-4 uppercase tracking-wider flex items-center">
-                      <User className="w-3 h-3 mr-2" />
-                      Account
-                    </div>
-                    
-                    {/* Welcome Card for Guest Users */}
-                    <div className="bg-green-600/10 rounded-xl p-4 border border-green-500/20 mb-4">
-                      <div className="text-center">
-                        <div className="w-12 h-12 rounded-full bg-green-600/20 border border-green-500/30 flex items-center justify-center mx-auto mb-3">
-                          <User className="w-6 h-6 text-green-400" />
-                        </div>
-                        <div className="text-base font-medium text-green-100 mb-1">Welcome to Secret Web</div>
-                        <div className="text-sm text-green-400/70">Join to access premium content</div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => {
-                          openAuthModal("login");
-                          setIsMenuOpen(false);
-                        }}
-                        className="w-full justify-start border border-green-500/50 text-green-300 hover:bg-green-600/20 hover:border-green-400/50 py-4 text-base rounded-lg transition-all duration-300 flex items-center"
-                        data-testid="login-button"
-                      >
-                        <Unlock className="w-5 h-5 mr-3" />
-                        Login
-                      </button>
-                      <button
-                        onClick={() => {
-                          openAuthModal("register");
-                          setIsMenuOpen(false);
-                        }}
-                        className="w-full justify-start py-4 text-base bg-green-600/30 text-green-100 border border-green-500/50 rounded-lg hover:bg-green-600/40 transition-all duration-300 flex items-center"
-                        data-testid="register-button"
-                      >
-                        Join Now
-                      </button>
-                    </div>
-                  </div>
+        {/* Navigation Bar - Always visible below header */}
+        <div className="bg-background/90 backdrop-blur-xl border-b border-green-500/20">
+          <div className="container mx-auto px-4">
+            <nav className="flex items-center justify-center py-4">
+              <div className="flex items-center space-x-8">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 ${
+                      location === item.href
+                        ? "bg-green-600/30 text-green-100 border border-green-500/50 shadow-lg"
+                        : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
+                    }`}
+                    data-testid={`nav-${item.label.toLowerCase()}`}
+                  >
+                    <div className={`w-2 h-2 rounded-full ${
+                      location === item.href ? "bg-green-400" : "bg-green-500/30"
+                    }`}></div>
+                    <span>{item.label}</span>
+                  </Link>
+                ))}
+                {user && user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 ${
+                      location === "/admin"
+                        ? "bg-purple-600/30 text-purple-100 border border-purple-500/50 shadow-lg"
+                        : "text-purple-300 hover:text-purple-100 hover:bg-purple-600/20 border border-transparent hover:border-purple-500/30"
+                    }`}
+                    data-testid="nav-admin"
+                  >
+                    <Shield className="w-4 h-4" />
+                    <span>Admin</span>
+                  </Link>
                 )}
               </div>
-
-              {/* Menu Footer */}
-              <div className="p-6 border-t border-green-500/20">
-                <div className="text-center">
-                  <div className="text-xs text-green-400/50">© 2025 Secret Web</div>
-                  <div className="text-xs text-green-400/40">Premium Digital Content Platform</div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+            </nav>
+          </div>
+        </div>
       </header>
 
       <AuthModal 
