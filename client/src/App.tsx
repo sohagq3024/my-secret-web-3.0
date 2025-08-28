@@ -21,7 +21,7 @@ function Router() {
   return (
     <div className="min-h-screen bg-background matrix-bg">
       <Header />
-      <main className="pt-16">
+      <main>
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/profiles" component={AllProfiles} />

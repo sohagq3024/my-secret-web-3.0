@@ -132,47 +132,78 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 cyber-border bg-background/95 backdrop-blur-xl border-b border-green-500/30">
+      <header className="bg-background/95 backdrop-blur-xl border-b border-green-500/30">
         <div className="container mx-auto px-4">
-          {/* Main Header Row */}
           <div className="flex items-center justify-between h-16">
-            {/* Logo Section */}
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative">
-                <img 
-                  src={logoImage} 
-                  alt="My Secret Web"
-                  className="w-10 h-10 rounded-lg border border-green-500/30 group-hover:border-green-400/50 transition-all duration-300"
-                />
-                <div className="absolute inset-0 bg-green-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
-                  Secret Web
-                </span>
-                <span className="text-xs text-green-300/70 -mt-1">Premium Digital Content</span>
-              </div>
-            </Link>
+            {/* Logo and Search Section */}
+            <div className="flex items-center space-x-6 flex-1">
+              {/* Logo */}
+              <Link href="/" className="flex items-center space-x-3 group">
+                <div className="relative">
+                  <img 
+                    src={logoImage} 
+                    alt="Secret Web"
+                    className="w-10 h-10 rounded-lg border border-green-500/30 group-hover:border-green-400/50 transition-all duration-300"
+                  />
+                  <div className="absolute inset-0 bg-green-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
+                    Secret Web
+                  </span>
+                  <span className="text-xs text-green-300/70 -mt-1">Premium Digital Content</span>
+                </div>
+              </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-1">
-              {navigation.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <Button
-                    variant={location === item.href ? "default" : "ghost"}
-                    className={`px-6 py-2 transition-all duration-300 font-medium ${
-                      location === item.href
-                        ? "bg-green-600/30 text-green-100 border border-green-500/50"
-                        : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
-                    }`}
-                  >
-                    {item.label}
-                  </Button>
-                </Link>
-              ))}
-            </nav>
+              {/* Search Bar - Next to Logo */}
+              <div className="hidden md:flex flex-1 max-w-md" ref={searchRef}>
+                <div className="relative w-full">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
+                  <Input
+                    placeholder="Search profiles, albums, videos..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className="pl-12 pr-4 py-2 bg-black/30 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl transition-all duration-300 hover:bg-black/40 focus:bg-black/50 w-full"
+                    data-testid="search-input"
+                  />
+                  
+                  {/* Search Results Dropdown */}
+                  {showSearchResults && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-xl border border-green-500/20 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto">
+                      {searchResults.length > 0 ? (
+                        <div className="py-2">
+                          <div className="px-4 py-2 text-xs text-green-400/60 border-b border-green-500/10">
+                            Search Results ({searchResults.length})
+                          </div>
+                          {searchResults.map((result) => (
+                            <button
+                              key={result.id}
+                              onClick={() => handleSearchResultClick(result.href)}
+                              className="w-full px-4 py-3 text-left hover:bg-green-600/10 transition-colors flex items-center justify-between group"
+                              data-testid={`search-result-${result.type.toLowerCase()}-${result.id.split('-')[1]}`}
+                            >
+                              <div className="flex flex-col">
+                                <span className="text-green-100 group-hover:text-green-50">{result.title}</span>
+                                <span className="text-xs text-green-400/60">{result.type}</span>
+                              </div>
+                              <div className="text-green-400/40 text-xs group-hover:text-green-400/60">
+                                {result.type}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="px-4 py-8 text-center text-green-400/60">
+                          No results found for "{searchQuery}"
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
-            {/* User Section */}
+            {/* User Actions and Hamburger Menu */}
             <div className="flex items-center space-x-4">
               {/* Membership Status */}
               {user && (
@@ -235,76 +266,34 @@ export function Header() {
               )}
 
               {/* Mobile Menu Button */}
+              {/* Hamburger Menu - Always Visible */}
               <Button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 variant="ghost"
                 size="sm"
-                className="lg:hidden text-green-300 hover:text-green-100 hover:bg-green-600/20"
+                className="text-green-300 hover:text-green-100 hover:bg-green-600/20 transition-all duration-300"
+                data-testid="hamburger-menu"
               >
-                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
             </div>
           </div>
 
-          {/* Search Bar Section - Below Main Header */}
-          <div className="hidden md:flex justify-center py-3 border-t border-green-500/20">
-            <div className="relative w-full max-w-md" ref={searchRef}>
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
-              <Input
-                placeholder="Search profiles, albums, videos..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                className="pl-12 pr-4 py-3 bg-black/40 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl transition-all duration-300 hover:bg-black/50 focus:bg-black/60"
-                data-testid="search-input"
-              />
-              
-              {/* Search Results Dropdown */}
-              {showSearchResults && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-xl border border-green-500/20 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto">
-                  {searchResults.length > 0 ? (
-                    <div className="py-2">
-                      <div className="px-4 py-2 text-xs text-green-400/60 border-b border-green-500/10">
-                        Search Results ({searchResults.length})
-                      </div>
-                      {searchResults.map((result) => (
-                        <button
-                          key={result.id}
-                          onClick={() => handleSearchResultClick(result.href)}
-                          className="w-full px-4 py-3 text-left hover:bg-green-600/10 transition-colors flex items-center justify-between group"
-                          data-testid={`search-result-${result.type.toLowerCase()}-${result.id.split('-')[1]}`}
-                        >
-                          <div className="flex flex-col">
-                            <span className="text-green-100 group-hover:text-green-50">{result.title}</span>
-                            <span className="text-xs text-green-400/60">{result.type}</span>
-                          </div>
-                          <div className="text-green-400/40 text-xs group-hover:text-green-400/60">
-                            {result.type}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="px-4 py-8 text-center text-green-400/60">
-                      No results found for "{searchQuery}"
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+        </div>
 
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="lg:hidden py-4 border-t border-green-500/30">
-              {/* Mobile Search */}
-              <div className="px-4 mb-4 md:hidden">
+        {/* Hamburger Menu Dropdown - Smooth slide down animation */}
+        {isMenuOpen && (
+          <div className="bg-background/98 backdrop-blur-xl border-t border-green-500/20 shadow-xl animate-in slide-in-from-top-2 duration-300">
+            <div className="container mx-auto px-4 py-6">
+              {/* Mobile Search - Only show on mobile */}
+              <div className="md:hidden mb-6">
                 <div className="relative">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
                   <Input
                     placeholder="Search profiles, albums, videos..."
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="pl-12 pr-4 py-3 bg-black/40 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl"
+                    className="pl-12 pr-4 py-3 bg-black/30 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl w-full"
                   />
                 </div>
                 
@@ -332,43 +321,56 @@ export function Header() {
                   </div>
                 )}
               </div>
-              <div className="flex flex-col space-y-2">
-                {navigation.map((item) => (
+
+              {/* Navigation Menu */}
+              <div className="space-y-1">
+                <div className="text-xs text-green-400/70 mb-3 uppercase tracking-wider">Navigation</div>
+                {navigation.map((item, index) => (
                   <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
                     <Button
                       variant={location === item.href ? "default" : "ghost"}
-                      className={`w-full justify-start font-medium ${
+                      className={`w-full justify-start font-medium py-3 px-4 transition-all duration-300 animate-in slide-in-from-left-1 ${
                         location === item.href
                           ? "bg-green-600/30 text-green-100 border border-green-500/50"
-                          : "text-green-300 hover:text-green-100 hover:bg-green-600/20"
+                          : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
                       }`}
+                      style={{animationDelay: `${index * 50}ms`}}
+                      data-testid={`nav-${item.label.toLowerCase()}`}
                     >
                       {item.label}
                     </Button>
                   </Link>
                 ))}
+              </div>
 
-                {user ? (
-                  <div className="pt-4 space-y-2 border-t border-green-500/30">
-                    <div className="flex items-center space-x-2 px-3 py-2 cyber-border rounded-lg">
-                      <User className="w-4 h-4 text-green-400" />
-                      <span className="text-sm text-green-100">{user.firstName} {user.lastName}</span>
-                      {isAdmin ? (
-                        <Badge className="bg-purple-600/30 text-purple-100 border border-purple-500/50 ml-auto">
-                          <Shield className="w-3 h-3 mr-1" />
-                          ADMIN
-                        </Badge>
-                      ) : (
-                        <Badge className="bg-green-600/30 text-green-100 border border-green-500/50 ml-auto">
-                          <Crown className="w-3 h-3 mr-1" />
-                          FREE ACCESS
-                        </Badge>
-                      )}
+              {/* User Section */}
+              {user ? (
+                <div className="mt-6 pt-6 border-t border-green-500/20">
+                  <div className="text-xs text-green-400/70 mb-3 uppercase tracking-wider">Account</div>
+                  <div className="flex items-center space-x-3 px-4 py-3 bg-green-600/10 rounded-lg border border-green-500/20 mb-4">
+                    <User className="w-5 h-5 text-green-400" />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-green-100">{user.firstName} {user.lastName}</div>
+                      <div className="text-xs text-green-400/70">{user.email}</div>
                     </div>
+                    {isAdmin ? (
+                      <Badge className="bg-purple-600/30 text-purple-100 border border-purple-500/50">
+                        <Shield className="w-3 h-3 mr-1" />
+                        ADMIN
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-green-600/30 text-green-100 border border-green-500/50">
+                        <Crown className="w-3 h-3 mr-1" />
+                        MEMBER
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
                     {user.role === "admin" && (
                       <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
-                        <Button className="w-full cyber-button">
-                          <Shield className="w-4 h-4 mr-2" />
+                        <Button className="w-full cyber-button justify-start" data-testid="admin-panel">
+                          <Shield className="w-4 h-4 mr-3" />
                           Admin Panel
                         </Button>
                       </Link>
@@ -376,23 +378,28 @@ export function Header() {
                     <Button
                       onClick={handleLogout}
                       variant="outline"
-                      className="w-full border-red-500/50 text-red-300 hover:bg-red-600/20 hover:border-red-400/50"
+                      className="w-full justify-start border-red-500/50 text-red-300 hover:bg-red-600/20 hover:border-red-400/50"
+                      data-testid="logout-button"
                     >
-                      <LogOut className="w-4 h-4 mr-2" />
+                      <LogOut className="w-4 h-4 mr-3" />
                       Logout
                     </Button>
                   </div>
-                ) : (
-                  <div className="pt-4 space-y-2 border-t border-green-500/30">
+                </div>
+              ) : (
+                <div className="mt-6 pt-6 border-t border-green-500/20">
+                  <div className="text-xs text-green-400/70 mb-3 uppercase tracking-wider">Account</div>
+                  <div className="space-y-2">
                     <Button
                       onClick={() => {
                         openAuthModal("login");
                         setIsMenuOpen(false);
                       }}
                       variant="outline"
-                      className="w-full border-green-500/50 text-green-300 hover:bg-green-600/20 hover:border-green-400/50"
+                      className="w-full justify-start border-green-500/50 text-green-300 hover:bg-green-600/20 hover:border-green-400/50"
+                      data-testid="login-button"
                     >
-                      <Unlock className="w-4 h-4 mr-2" />
+                      <Unlock className="w-4 h-4 mr-3" />
                       Login
                     </Button>
                     <Button
@@ -400,16 +407,17 @@ export function Header() {
                         openAuthModal("register");
                         setIsMenuOpen(false);
                       }}
-                      className="w-full cyber-button"
+                      className="w-full justify-start cyber-button"
+                      data-testid="register-button"
                     >
                       Join Now
                     </Button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </header>
 
       <AuthModal 
