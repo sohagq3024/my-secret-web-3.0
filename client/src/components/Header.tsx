@@ -292,12 +292,12 @@ export function Header() {
           <>
             {/* Background Overlay - Higher z-index */}
             <div 
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] animate-in fade-in duration-300"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99998] animate-in fade-in duration-300"
               onClick={() => setIsMenuOpen(false)}
             />
             
             {/* Pop-up Menu Panel - Highest z-index */}
-            <div className="fixed top-0 right-0 h-full w-full max-w-md bg-background/98 backdrop-blur-xl border-l border-green-500/30 shadow-2xl z-[9999] animate-in slide-in-from-right duration-300">
+            <div className="fixed top-0 right-0 h-full w-full max-w-md bg-background/98 backdrop-blur-xl border-l border-green-500/30 shadow-2xl z-[99999] animate-in slide-in-from-right duration-300">
               {/* Menu Header */}
               <div className="flex items-center justify-between p-6 border-b border-green-500/20">
                 <div className="flex items-center space-x-3">
