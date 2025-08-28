@@ -23,6 +23,8 @@ import { Link } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useRef, useEffect } from "react";
 import { MembershipModal } from "@/components/MembershipModal";
+import { LoadingScreen } from "@/components/ui/loading-screen";
+import { useLoading } from "@/hooks/use-loading";
 import { Celebrity, Album, Video } from "@shared/schema";
 
 export function ContentViewer() {
@@ -47,6 +49,8 @@ export function ContentViewer() {
     },
     enabled: !!type && !!id,
   });
+
+  const showLoading = useLoading(isLoading, { minLoadingTime: 800, delay: 300 });
 
   // Check access permissions - DISABLED FOR FREE ACCESS MODE
   useEffect(() => {
@@ -104,18 +108,15 @@ export function ContentViewer() {
     alert("Download started! Your content will be available shortly.");
   };
 
-  if (isLoading) {
+  if (showLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-          </div>
-        </div>
+        <LoadingScreen 
+          message="Loading content..." 
+          size="lg" 
+          variant="overlay"
+        />
       </div>
     );
   }

@@ -8,6 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { VideoPreview } from '@/components/ui/file-upload';
 import { getPriceLabelFromCategory } from '@/lib/fileUpload';
+import { LoadingScreen } from '@/components/ui/loading-screen';
+import { useLoading } from '@/hooks/use-loading';
 import type { Video } from '@shared/schema';
 
 export default function VideoDetails() {
@@ -19,16 +21,16 @@ export default function VideoDetails() {
     enabled: !!id,
   });
 
-  if (isLoading) {
+  const showLoading = useLoading(isLoading, { minLoadingTime: 800, delay: 300 });
+
+  if (showLoading) {
     return (
       <div className="min-h-screen bg-background p-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-muted rounded w-32"></div>
-            <div className="h-96 bg-muted rounded"></div>
-            <div className="h-32 bg-muted rounded"></div>
-          </div>
-        </div>
+        <LoadingScreen 
+          message="Loading video..." 
+          size="lg" 
+          variant="overlay"
+        />
       </div>
     );
   }

@@ -8,6 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ImagePreview } from '@/components/ui/file-upload';
 import { getPriceLabelFromCategory } from '@/lib/fileUpload';
+import { LoadingScreen } from '@/components/ui/loading-screen';
+import { useLoading } from '@/hooks/use-loading';
 import type { Album, AlbumImage } from '@shared/schema';
 
 export default function AlbumDetails() {
@@ -24,20 +26,17 @@ export default function AlbumDetails() {
     enabled: !!id,
   });
 
-  if (albumLoading || imagesLoading) {
+  const isLoading = albumLoading || imagesLoading;
+  const showLoading = useLoading(isLoading, { minLoadingTime: 800, delay: 300 });
+
+  if (showLoading) {
     return (
       <div className="min-h-screen bg-background p-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-muted rounded w-32"></div>
-            <div className="h-64 bg-muted rounded"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-64 bg-muted rounded"></div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <LoadingScreen 
+          message="Loading album..." 
+          size="lg" 
+          variant="overlay"
+        />
       </div>
     );
   }

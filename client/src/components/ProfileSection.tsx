@@ -5,30 +5,30 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, User, MapPin, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
+import { ListSkeleton } from "@/components/ui/loading-screen";
+import { useLoading } from "@/hooks/use-loading";
 
 export function ProfileSection() {
   const { data: profiles = [], isLoading } = useQuery<Profile[]>({
     queryKey: ["/api/profiles"],
   });
 
+  const showLoading = useLoading(isLoading, { minLoadingTime: 600, delay: 200 });
+
   const handleViewProfile = (profileId: number) => {
     // Navigate to profile details
     window.location.href = `/profile/${profileId}`;
   };
 
-  if (isLoading) {
+  if (showLoading) {
     return (
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text mb-8">
+            👤 Profile Collection
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="animate-pulse">
-                <div className="aspect-square bg-green-950/30 rounded-xl mb-4 cyber-border"></div>
-                <div className="h-4 bg-green-950/30 rounded mb-2"></div>
-                <div className="h-3 bg-green-950/30 rounded w-3/4 mx-auto mb-2"></div>
-                <div className="h-3 bg-green-950/30 rounded w-1/2 mx-auto"></div>
-              </div>
-            ))}
+            <ListSkeleton count={4} />
           </div>
         </div>
       </section>

@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { MembershipModal } from "./MembershipModal";
 import { motion } from "framer-motion";
+import { ListSkeleton } from "@/components/ui/loading-screen";
+import { useLoading } from "@/hooks/use-loading";
 
 export function ContentSection() {
   const { isLoggedIn, hasValidMembership } = useAuth();
@@ -45,21 +47,18 @@ export function ContentSection() {
   };
 
   const isLoading = videosLoading || albumsLoading;
+  const showLoading = useLoading(isLoading, { minLoadingTime: 600, delay: 200 });
   const hasContent = videos.length > 0 || albums.length > 0;
 
-  if (isLoading) {
+  if (showLoading) {
     return (
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text mb-8">
+            🎬 Content Collection
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="animate-pulse">
-                <div className="bg-green-950/30 rounded-xl h-64 mb-4 cyber-border"></div>
-                <div className="h-4 bg-green-950/30 rounded mb-2"></div>
-                <div className="h-3 bg-green-950/30 rounded mb-4"></div>
-                <div className="h-8 bg-green-950/30 rounded"></div>
-              </div>
-            ))}
+            <ListSkeleton count={6} />
           </div>
         </div>
       </section>

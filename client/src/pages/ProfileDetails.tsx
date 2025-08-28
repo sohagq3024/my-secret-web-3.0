@@ -8,6 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getPriceLabelFromCategory } from '@/lib/fileUpload';
+import { LoadingScreen } from '@/components/ui/loading-screen';
+import { useLoading } from '@/hooks/use-loading';
 import type { Profile, Album, Video } from '@shared/schema';
 
 export default function ProfileDetails() {
@@ -18,6 +20,8 @@ export default function ProfileDetails() {
     queryKey: ['/api/profiles', id],
     enabled: !!id,
   });
+
+  const showLoading = useLoading(profileLoading, { minLoadingTime: 800, delay: 300 });
 
   const { data: albums } = useQuery<Album[]>({
     queryKey: ['/api/albums'],
@@ -31,16 +35,14 @@ export default function ProfileDetails() {
     enabled: !!id,
   });
 
-  if (profileLoading) {
+  if (showLoading) {
     return (
       <div className="min-h-screen bg-background p-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-muted rounded w-32"></div>
-            <div className="h-64 bg-muted rounded"></div>
-            <div className="h-96 bg-muted rounded"></div>
-          </div>
-        </div>
+        <LoadingScreen 
+          message="Loading profile details..." 
+          size="lg" 
+          variant="overlay"
+        />
       </div>
     );
   }

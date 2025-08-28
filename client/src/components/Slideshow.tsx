@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { MembershipModal } from "./MembershipModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { LoadingScreen } from "@/components/ui/loading-screen";
+import { useLoading } from "@/hooks/use-loading";
 
 export function Slideshow() {
   const { isLoggedIn, hasValidMembership } = useAuth();
@@ -14,6 +16,8 @@ export function Slideshow() {
   const { data: slides = [], isLoading } = useQuery<SlideshowImage[]>({
     queryKey: ["/api/slideshow"],
   });
+
+  const showLoading = useLoading(isLoading, { minLoadingTime: 800, delay: 300 });
 
   useEffect(() => {
     if (slides.length > 0) {
@@ -30,7 +34,20 @@ export function Slideshow() {
     // No membership required
   };
 
-  if (isLoading || slides.length === 0) {
+  if (showLoading) {
+    return (
+      <section className="relative h-[70vh] hero-gradient flex items-center justify-center">
+        <div className="absolute inset-0 matrix-bg"></div>
+        <LoadingScreen 
+          message="Loading slideshow..." 
+          size="lg" 
+          variant="inline"
+        />
+      </section>
+    );
+  }
+
+  if (slides.length === 0) {
     return (
       <section className="relative h-[70vh] hero-gradient flex items-center justify-center">
         <div className="absolute inset-0 matrix-bg"></div>
