@@ -20,8 +20,8 @@ export function LoadingScreen({
   const config = sizeConfig[size];
 
   const overlayClasses = variant === "overlay" 
-    ? "fixed inset-0 bg-black/90 backdrop-blur-sm z-50" 
-    : "w-full";
+    ? "fixed inset-0 bg-black z-50" 
+    : "w-full bg-black";
 
   return (
     <motion.div

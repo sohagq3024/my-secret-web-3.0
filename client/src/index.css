@@ -60,6 +60,11 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+
+  /* Prevent white flash on page load */
+  html, body {
+    background-color: black !important;
+  }
 }
 
 @layer components {
