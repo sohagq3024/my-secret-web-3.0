@@ -116,6 +116,12 @@ export function Header() {
     navigate(href);
     setSearchQuery("");
     setShowSearchResults(false);
+    setIsMenuOpen(false); // Close menu after navigation
+  };
+
+  const handleNavigation = (href: string) => {
+    navigate(href);
+    setIsMenuOpen(false); // Ensure menu closes on navigation
   };
 
   // Close search results when clicking outside
@@ -284,14 +290,14 @@ export function Header() {
         {/* Full Screen Pop-up Menu Overlay */}
         {isMenuOpen && (
           <>
-            {/* Background Overlay */}
+            {/* Background Overlay - Higher z-index */}
             <div 
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-in fade-in duration-300"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] animate-in fade-in duration-300"
               onClick={() => setIsMenuOpen(false)}
             />
             
-            {/* Pop-up Menu Panel */}
-            <div className="fixed top-0 right-0 h-full w-full max-w-md bg-background/95 backdrop-blur-xl border-l border-green-500/30 shadow-2xl z-50 animate-in slide-in-from-right duration-300">
+            {/* Pop-up Menu Panel - Highest z-index */}
+            <div className="fixed top-0 right-0 h-full w-full max-w-md bg-background/98 backdrop-blur-xl border-l border-green-500/30 shadow-2xl z-[9999] animate-in slide-in-from-right duration-300">
               {/* Menu Header */}
               <div className="flex items-center justify-between p-6 border-b border-green-500/20">
                 <div className="flex items-center space-x-3">
@@ -364,25 +370,24 @@ export function Header() {
                   </div>
                   <div className="space-y-2">
                     {navigation.map((item, index) => (
-                      <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
-                        <Button
-                          variant={location === item.href ? "default" : "ghost"}
-                          className={`w-full justify-start font-medium py-4 px-4 text-base transition-all duration-300 animate-in slide-in-from-right ${
-                            location === item.href
-                              ? "bg-green-600/30 text-green-100 border border-green-500/50 shadow-lg"
-                              : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
-                          }`}
-                          style={{animationDelay: `${index * 100}ms`}}
-                          data-testid={`nav-${item.label.toLowerCase()}`}
-                        >
-                          <div className="flex items-center">
-                            <div className={`w-2 h-2 rounded-full mr-3 ${
-                              location === item.href ? "bg-green-400" : "bg-green-500/30"
-                            }`}></div>
-                            {item.label}
-                          </div>
-                        </Button>
-                      </Link>
+                      <button
+                        key={`nav-${item.href}-${index}`}
+                        onClick={() => handleNavigation(item.href)}
+                        className={`w-full justify-start font-medium py-4 px-4 text-base transition-all duration-300 rounded-lg flex items-center ${
+                          location === item.href
+                            ? "bg-green-600/30 text-green-100 border border-green-500/50 shadow-lg"
+                            : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
+                        }`}
+                        style={{animationDelay: `${index * 100}ms`}}
+                        data-testid={`nav-${item.label.toLowerCase()}`}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-2 h-2 rounded-full mr-3 ${
+                            location === item.href ? "bg-green-400" : "bg-green-500/30"
+                          }`}></div>
+                          {item.label}
+                        </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -421,22 +426,26 @@ export function Header() {
                     
                     <div className="space-y-2">
                       {user.role === "admin" && (
-                        <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
-                          <Button className="w-full justify-start cyber-button py-4 text-base" data-testid="admin-panel">
-                            <Shield className="w-5 h-5 mr-3" />
-                            Admin Panel
-                          </Button>
-                        </Link>
+                        <button
+                          onClick={() => handleNavigation("/admin")}
+                          className="w-full justify-start py-4 text-base bg-purple-600/30 text-purple-100 border border-purple-500/50 rounded-lg hover:bg-purple-600/40 transition-all duration-300 flex items-center"
+                          data-testid="admin-panel"
+                        >
+                          <Shield className="w-5 h-5 mr-3" />
+                          Admin Panel
+                        </button>
                       )}
-                      <Button
-                        onClick={handleLogout}
-                        variant="outline"
-                        className="w-full justify-start border-red-500/50 text-red-300 hover:bg-red-600/20 hover:border-red-400/50 py-4 text-base"
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="w-full justify-start border border-red-500/50 text-red-300 hover:bg-red-600/20 hover:border-red-400/50 py-4 text-base rounded-lg transition-all duration-300 flex items-center"
                         data-testid="logout-button"
                       >
                         <LogOut className="w-5 h-5 mr-3" />
                         Logout
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -458,28 +467,27 @@ export function Header() {
                     </div>
                     
                     <div className="space-y-2">
-                      <Button
+                      <button
                         onClick={() => {
                           openAuthModal("login");
                           setIsMenuOpen(false);
                         }}
-                        variant="outline"
-                        className="w-full justify-start border-green-500/50 text-green-300 hover:bg-green-600/20 hover:border-green-400/50 py-4 text-base"
+                        className="w-full justify-start border border-green-500/50 text-green-300 hover:bg-green-600/20 hover:border-green-400/50 py-4 text-base rounded-lg transition-all duration-300 flex items-center"
                         data-testid="login-button"
                       >
                         <Unlock className="w-5 h-5 mr-3" />
                         Login
-                      </Button>
-                      <Button
+                      </button>
+                      <button
                         onClick={() => {
                           openAuthModal("register");
                           setIsMenuOpen(false);
                         }}
-                        className="w-full justify-start cyber-button py-4 text-base"
+                        className="w-full justify-start py-4 text-base bg-green-600/30 text-green-100 border border-green-500/50 rounded-lg hover:bg-green-600/40 transition-all duration-300 flex items-center"
                         data-testid="register-button"
                       >
                         Join Now
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 )}
