@@ -42,10 +42,10 @@ export function Header() {
   };
 
   const navigation = [
-    { href: "/", label: "Home", icon: "🏠" },
-    { href: "/profiles", label: "Profile", icon: "👤" },
-    { href: "/albums", label: "Album", icon: "📸" },
-    { href: "/videos", label: "Video", icon: "🎬" },
+    { href: "/", label: "Home" },
+    { href: "/profiles", label: "Profile" },
+    { href: "/albums", label: "Album" },
+    { href: "/videos", label: "Video" },
   ];
 
   // Fetch data for search
@@ -134,6 +134,7 @@ export function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 cyber-border bg-background/95 backdrop-blur-xl border-b border-green-500/30">
         <div className="container mx-auto px-4">
+          {/* Main Header Row */}
           <div className="flex items-center justify-between h-16">
             {/* Logo Section */}
             <Link href="/" className="flex items-center space-x-3 group">
@@ -147,7 +148,7 @@ export function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
-                  My Secret Web
+                  Secret Web
                 </span>
                 <span className="text-xs text-green-300/70 -mt-1">Premium Digital Content</span>
               </div>
@@ -159,67 +160,17 @@ export function Header() {
                 <Link key={item.href} href={item.href}>
                   <Button
                     variant={location === item.href ? "default" : "ghost"}
-                    className={`px-4 py-2 transition-all duration-300 ${
+                    className={`px-6 py-2 transition-all duration-300 font-medium ${
                       location === item.href
                         ? "bg-green-600/30 text-green-100 border border-green-500/50"
                         : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
                     }`}
                   >
-                    <span className="mr-2">{item.icon}</span>
                     {item.label}
                   </Button>
                 </Link>
               ))}
             </nav>
-
-            {/* Search Bar */}
-            <div className="hidden md:flex items-center relative" ref={searchRef}>
-              <div className="relative w-80">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 w-4 h-4" />
-                <Input
-                  placeholder="Search profiles, albums, videos..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="pl-10 bg-background/50 border-green-500/30 text-green-100 placeholder-green-400/70 focus:border-green-400/50 focus:ring-green-400/20"
-                  data-testid="search-input"
-                />
-                
-                {/* Search Results Dropdown */}
-                {showSearchResults && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-xl border border-green-500/30 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto">
-                    {searchResults.length > 0 ? (
-                      <div className="py-2">
-                        <div className="px-4 py-2 text-xs text-green-400/70 border-b border-green-500/20">
-                          Search Results ({searchResults.length})
-                        </div>
-                        {searchResults.map((result) => (
-                          <button
-                            key={result.id}
-                            onClick={() => handleSearchResultClick(result.href)}
-                            className="w-full px-4 py-3 text-left hover:bg-green-600/20 transition-colors flex items-center justify-between group"
-                            data-testid={`search-result-${result.type.toLowerCase()}-${result.id.split('-')[1]}`}
-                          >
-                            <div className="flex flex-col">
-                              <span className="text-green-100 group-hover:text-green-50">{result.title}</span>
-                              <span className="text-xs text-green-400/70">{result.type}</span>
-                            </div>
-                            <span className="text-green-400/50 text-xs group-hover:text-green-400">
-                              {result.type === 'Profile' && '👤'}
-                              {result.type === 'Album' && '📸'}
-                              {result.type === 'Video' && '🎬'}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="px-4 py-8 text-center text-green-400/70">
-                        No results found for "{searchQuery}"
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
 
             {/* User Section */}
             <div className="flex items-center space-x-4">
@@ -295,24 +246,71 @@ export function Header() {
             </div>
           </div>
 
+          {/* Search Bar Section - Below Main Header */}
+          <div className="hidden md:flex justify-center py-3 border-t border-green-500/20">
+            <div className="relative w-full max-w-md" ref={searchRef}>
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
+              <Input
+                placeholder="Search profiles, albums, videos..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="pl-12 pr-4 py-3 bg-black/40 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl transition-all duration-300 hover:bg-black/50 focus:bg-black/60"
+                data-testid="search-input"
+              />
+              
+              {/* Search Results Dropdown */}
+              {showSearchResults && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-xl border border-green-500/20 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto">
+                  {searchResults.length > 0 ? (
+                    <div className="py-2">
+                      <div className="px-4 py-2 text-xs text-green-400/60 border-b border-green-500/10">
+                        Search Results ({searchResults.length})
+                      </div>
+                      {searchResults.map((result) => (
+                        <button
+                          key={result.id}
+                          onClick={() => handleSearchResultClick(result.href)}
+                          className="w-full px-4 py-3 text-left hover:bg-green-600/10 transition-colors flex items-center justify-between group"
+                          data-testid={`search-result-${result.type.toLowerCase()}-${result.id.split('-')[1]}`}
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-green-100 group-hover:text-green-50">{result.title}</span>
+                            <span className="text-xs text-green-400/60">{result.type}</span>
+                          </div>
+                          <div className="text-green-400/40 text-xs group-hover:text-green-400/60">
+                            {result.type}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="px-4 py-8 text-center text-green-400/60">
+                      No results found for "{searchQuery}"
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Mobile Menu */}
           {isMenuOpen && (
             <div className="lg:hidden py-4 border-t border-green-500/30">
               {/* Mobile Search */}
               <div className="px-4 mb-4 md:hidden">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 w-4 h-4" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
                   <Input
                     placeholder="Search profiles, albums, videos..."
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="pl-10 bg-background/50 border-green-500/30 text-green-100 placeholder-green-400/70 focus:border-green-400/50 focus:ring-green-400/20"
+                    className="pl-12 pr-4 py-3 bg-black/40 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl"
                   />
                 </div>
                 
                 {/* Mobile Search Results */}
                 {showSearchResults && searchResults.length > 0 && (
-                  <div className="mt-2 bg-background/95 border border-green-500/30 rounded-lg max-h-60 overflow-y-auto">
+                  <div className="mt-2 bg-black/90 border border-green-500/20 rounded-xl max-h-60 overflow-y-auto">
                     {searchResults.map((result) => (
                       <button
                         key={result.id}
@@ -320,17 +318,15 @@ export function Header() {
                           handleSearchResultClick(result.href);
                           setIsMenuOpen(false);
                         }}
-                        className="w-full px-3 py-2 text-left hover:bg-green-600/20 transition-colors flex items-center justify-between"
+                        className="w-full px-3 py-2 text-left hover:bg-green-600/10 transition-colors flex items-center justify-between"
                       >
                         <div className="flex flex-col">
                           <span className="text-green-100 text-sm">{result.title}</span>
-                          <span className="text-xs text-green-400/70">{result.type}</span>
+                          <span className="text-xs text-green-400/60">{result.type}</span>
                         </div>
-                        <span className="text-green-400/50 text-xs">
-                          {result.type === 'Profile' && '👤'}
-                          {result.type === 'Album' && '📸'}
-                          {result.type === 'Video' && '🎬'}
-                        </span>
+                        <div className="text-green-400/40 text-xs">
+                          {result.type}
+                        </div>
                       </button>
                     ))}
                   </div>
@@ -341,13 +337,12 @@ export function Header() {
                   <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
                     <Button
                       variant={location === item.href ? "default" : "ghost"}
-                      className={`w-full justify-start ${
+                      className={`w-full justify-start font-medium ${
                         location === item.href
                           ? "bg-green-600/30 text-green-100 border border-green-500/50"
                           : "text-green-300 hover:text-green-100 hover:bg-green-600/20"
                       }`}
                     >
-                      <span className="mr-2">{item.icon}</span>
                       {item.label}
                     </Button>
                   </Link>
