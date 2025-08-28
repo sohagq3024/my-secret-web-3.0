@@ -62,6 +62,12 @@ Preferred communication style: Simple, everyday language.
 
 ## External Dependencies
 
+### Media Storage
+- **Cloudinary**: External media storage and CDN
+- **Cloud Name**: dnewpzaeg
+- **Auto-optimization**: Built-in image/video compression and resizing
+- **Permanent URLs**: All media stored with permanent Cloudinary URLs
+
 ### Database Integration
 - **Neon Database**: Serverless PostgreSQL hosting
 - **Drizzle ORM**: Type-safe database operations
@@ -96,7 +102,17 @@ Preferred communication style: Simple, everyday language.
 - Push command for development schema updates
 - PostgreSQL dialect with Neon serverless compatibility
 
-### Recent Updates (July 18, 2025)
+### Recent Updates
+
+#### January 28, 2025
+- **Cloudinary Integration**: Implemented permanent media storage solution
+  - Added Cloudinary configuration for images and videos
+  - Created upload endpoints (/api/upload/single, /api/upload/multiple)
+  - Updated file upload system to use Cloudinary instead of temporary local URLs
+  - All media files now stored permanently at Cloudinary URLs
+  - Fixed image persistence issue where images disappeared after page refresh
+
+#### July 18, 2025 
 - **Migration Completed**: Successfully migrated from Replit Agent to Replit environment
 - **Database Setup**: PostgreSQL database configured with all required tables
 - **Security Implementation**: Proper client/server separation with robust security practices

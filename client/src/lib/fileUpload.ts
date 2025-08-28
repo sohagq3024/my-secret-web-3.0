@@ -31,24 +31,39 @@ export function getPriceFromCategory(category: string): number {
 }
 
 export const uploadFile = async (file: File): Promise<UploadedFile> => {
-  // Create a simulated upload with local URL for preview
-  const url = URL.createObjectURL(file);
-  const id = `file_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+  const formData = new FormData();
+  formData.append('file', file);
   
-  return {
-    id,
-    name: file.name,
-    type: file.type,
-    size: file.size,
-    url,
-    preview: url
-  };
+  const response = await fetch('/api/upload/single', {
+    method: 'POST',
+    body: formData,
+  });
+  
+  if (!response.ok) {
+    throw new Error('Upload failed');
+  }
+  
+  return await response.json();
 };
 
 export const uploadMultipleFiles = async (files: FileList | File[]): Promise<UploadedFile[]> => {
+  const formData = new FormData();
   const fileArray = Array.from(files);
-  const uploadPromises = fileArray.map(file => uploadFile(file));
-  return Promise.all(uploadPromises);
+  
+  fileArray.forEach(file => {
+    formData.append('files', file);
+  });
+  
+  const response = await fetch('/api/upload/multiple', {
+    method: 'POST',
+    body: formData,
+  });
+  
+  if (!response.ok) {
+    throw new Error('Upload failed');
+  }
+  
+  return await response.json();
 };
 
 export const validateImageFile = (file: File): boolean => {

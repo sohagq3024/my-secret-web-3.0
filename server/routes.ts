@@ -1,5 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import multer from 'multer';
+import { uploadToCloudinary, uploadMultipleToCloudinary } from './cloudinary';
 import { storage } from "./storage";
 import { 
   insertUserSchema, 
@@ -13,6 +15,26 @@ import {
   insertCelebritySchema
 } from "@shared/schema";
 import { z } from "zod";
+
+// Configure multer for memory storage
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = [
+      'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
+      'video/mp4', 'video/mpeg', 'video/quicktime'
+    ];
+    
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'));
+    }
+  }
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication routes
@@ -472,6 +494,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Celebrity deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete celebrity" });
+    }
+  });
+
+  // File Upload routes - Cloudinary integration
+  app.post("/api/upload/single", upload.single('file'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file provided" });
+      }
+
+      const result = await uploadToCloudinary(req.file, 'my-secret-web');
+      
+      res.json({
+        id: result.public_id,
+        name: req.file.originalname,
+        type: req.file.mimetype,
+        size: req.file.size,
+        url: result.secure_url,
+        preview: result.secure_url
+      });
+    } catch (error) {
+      console.error('Upload error:', error);
+      res.status(500).json({ message: "Upload failed" });
+    }
+  });
+
+  app.post("/api/upload/multiple", upload.array('files', 10), async (req, res) => {
+    try {
+      if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+        return res.status(400).json({ message: "No files provided" });
+      }
+
+      const results = await uploadMultipleToCloudinary(req.files, 'my-secret-web');
+      
+      const files = req.files as Express.Multer.File[];
+      const uploadedFiles = results.map((result, index) => ({
+        id: result.public_id,
+        name: files[index].originalname,
+        type: files[index].mimetype,
+        size: files[index].size,
+        url: result.secure_url,
+        preview: result.secure_url
+      }));
+
+      res.json(uploadedFiles);
+    } catch (error) {
+      console.error('Multiple upload error:', error);
+      res.status(500).json({ message: "Upload failed" });
     }
   });
 
