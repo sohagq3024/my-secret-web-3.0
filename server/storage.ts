@@ -638,7 +638,7 @@ export class DatabaseStorage implements IStorage {
         }
       }
     } catch (error) {
-      console.error("Database initialization failed, switching to mock storage:", error.message);
+      console.error("Database initialization failed, switching to mock storage:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
     }
   }
@@ -652,7 +652,7 @@ export class DatabaseStorage implements IStorage {
       const [user] = await db.select().from(users).where(eq(users.id, id));
       return user || undefined;
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getUser(id);
     }
@@ -666,7 +666,7 @@ export class DatabaseStorage implements IStorage {
       const [user] = await db.select().from(users).where(eq(users.username, username));
       return user || undefined;
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getUserByUsername(username);
     }
@@ -762,7 +762,7 @@ export class DatabaseStorage implements IStorage {
     try {
       return await db.select().from(profiles);
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getProfiles();
     }
@@ -794,7 +794,7 @@ export class DatabaseStorage implements IStorage {
     try {
       return await db.select().from(celebrities);
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getCelebrities();
     }
@@ -822,7 +822,7 @@ export class DatabaseStorage implements IStorage {
     try {
       return await db.select().from(albums);
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getAlbums();
     }
@@ -884,7 +884,7 @@ export class DatabaseStorage implements IStorage {
     try {
       return await db.select().from(videos);
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getVideos();
     }
@@ -926,7 +926,7 @@ export class DatabaseStorage implements IStorage {
         .where(eq(slideshowImages.isActive, true))
         .orderBy(slideshowImages.order);
     } catch (error) {
-      console.error("Database operation failed, using mock fallback:", error.message);
+      console.error("Database operation failed, using mock fallback:", error instanceof Error ? error.message : String(error));
       this.fallbackToMock = true;
       return this.mockStorage.getSlideshowImages();
     }
