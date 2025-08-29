@@ -63,13 +63,19 @@ export function AllProfiles() {
                 data-testid={`profile-card-${profile.id}`}
               >
                 <CardContent className="p-0">
-                  <div className="relative overflow-hidden rounded-t-lg aspect-square">
+                  <div className="relative overflow-hidden rounded-full aspect-square w-32 h-32 mx-auto mt-4 mb-4">
                     <img
                       src={profile.imageUrl}
                       alt={profile.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full">
+                      <div className="absolute bottom-2 left-2 right-2 text-center">
+                        <div className="bg-green-600/90 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                          {profile.isFree ? "Free" : "Premium"}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="p-4 text-center">

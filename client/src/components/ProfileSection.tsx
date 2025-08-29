@@ -53,22 +53,25 @@ export function ProfileSection() {
   }
 
   return (
-    <section id="profiles" className="py-16 bg-background">
+    <section id="profiles" className="py-20 bg-gradient-to-br from-green-950/30 to-emerald-950/30 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
-            👤 Profile Collection
+        <div className="text-center mb-16">
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent neon-text mb-4">
+            ✨ Featured Profiles
           </h2>
-          {profiles.length > 4 && (
+          <p className="text-green-300/80 text-lg max-w-2xl mx-auto">
+            Discover amazing personalities and their exclusive content collections
+          </p>
+          {profiles.length > 8 && (
             <Link href="/profiles">
-              <Button className="glass-button">
-                View All <ArrowRight className="ml-2 w-4 h-4" />
+              <Button className="glass-button mt-6">
+                Explore All Profiles <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
           )}
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
           {profiles.slice(0, 8).map((profile, index) => (
             <motion.div
               key={profile.id}
@@ -77,69 +80,39 @@ export function ProfileSection() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
             >
               <Card
-                className="group cursor-pointer card-hover premium-card h-full"
+                className="group cursor-pointer card-hover bg-gradient-to-b from-green-900/20 to-green-950/40 border-green-500/30 backdrop-blur-sm hover:border-green-400/50 transition-all duration-300 hover:scale-105"
                 onClick={() => handleViewProfile(profile.id)}
                 data-testid={`card-profile-${profile.id}`}
               >
-                <CardContent className="p-0 h-full flex flex-col">
-                  <div className="relative overflow-hidden rounded-xl aspect-square">
+                <CardContent className="p-6 text-center flex flex-col items-center">
+                  <div className="relative overflow-hidden rounded-full aspect-square w-32 h-32 mx-auto mb-4">
                     <img
                       src={profile.imageUrl}
                       alt={profile.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-4 left-4 right-4 text-green-100">
-                        <div className="flex items-center justify-between">
-                          <p className="font-semibold">
-                            {profile.isFree ? "Free Profile" : "Premium Profile"}
-                          </p>
-                          {!profile.isFree && profile.price && (
-                            <div className="flex items-center">
-                              <span className="text-sm">${profile.price}</span>
-                            </div>
-                          )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full">
+                      <div className="absolute bottom-2 left-2 right-2 text-center">
+                        <div className="bg-green-600/90 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                          {profile.isFree ? "Free" : `$${profile.price}`}
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="p-4 text-center flex-1 flex flex-col">
-                    <h3 className="text-lg font-semibold text-green-100 mb-1">
+                  <div className="text-center">
+                    <h3 className="text-base font-bold text-green-100 mb-1 line-clamp-1">
                       {profile.name}
                     </h3>
-                    <p className="text-sm text-green-300/70 mb-2">{profile.profession}</p>
+                    <p className="text-xs text-green-300/70 mb-3 line-clamp-1">{profile.profession}</p>
                     
-                    <div className="space-y-1 mb-4 flex-1">
-                      {profile.dateOfBirth && (
-                        <div className="flex items-center justify-center text-xs text-green-300/60">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          <span>{profile.dateOfBirth}</span>
-                        </div>
-                      )}
-                      {profile.gender && (
-                        <div className="flex items-center justify-center text-xs text-green-300/60">
-                          <User className="w-3 h-3 mr-1" />
-                          <span>{profile.gender}</span>
-                        </div>
-                      )}
-                      {profile.nationality && (
-                        <div className="flex items-center justify-center text-xs text-green-300/60">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          <span>{profile.nationality}</span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="mt-auto">
-                      <Button
-                        size="sm"
-                        className="cyber-button w-full"
-                        data-testid={`button-view-profile-${profile.id}`}
-                      >
-                        View Profile
-                      </Button>
-                    </div>
+                    <Button
+                      size="sm"
+                      className="cyber-button text-xs px-3 py-1"
+                      data-testid={`button-view-profile-${profile.id}`}
+                    >
+                      View
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
