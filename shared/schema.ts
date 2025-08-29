@@ -95,7 +95,7 @@ export const videos = pgTable("videos", {
 export const slideshowImages = pgTable("slideshow_images", {
   id: serial("id").primaryKey(),
   imageUrl: text("image_url").notNull(),
-  title: text("title").notNull(),
+  title: text("title"),
   subtitle: text("subtitle"),
   order: integer("order").notNull(),
   isActive: boolean("is_active").default(true),

@@ -161,8 +161,6 @@ export function RestructuredAdminPanel() {
             <TableHeader>
               <TableRow>
                 <TableHead>Image</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Subtitle</TableHead>
                 <TableHead>Order</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Actions</TableHead>
@@ -172,10 +170,8 @@ export function RestructuredAdminPanel() {
               {slideshowImages.map((image) => (
                 <TableRow key={image.id}>
                   <TableCell>
-                    <img src={image.imageUrl} alt={image.title} className="w-16 h-16 object-cover rounded" />
+                    <img src={image.imageUrl} alt="Slideshow image" className="w-16 h-16 object-cover rounded" />
                   </TableCell>
-                  <TableCell>{image.title}</TableCell>
-                  <TableCell>{image.subtitle}</TableCell>
                   <TableCell>{image.order}</TableCell>
                   <TableCell>
                     <Badge variant={image.isActive ? 'default' : 'secondary'}>
@@ -988,37 +984,6 @@ export function RestructuredAdminPanel() {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={formData.title || ''}
-                  onChange={(e) => setFormData((prev: any) => ({ ...prev, title: e.target.value }))}
-                  placeholder="Enter title"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="subtitle">Subtitle</Label>
-                <Input
-                  id="subtitle"
-                  value={formData.subtitle || ''}
-                  onChange={(e) => setFormData((prev: any) => ({ ...prev, subtitle: e.target.value }))}
-                  placeholder="Enter subtitle"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="order">Display Order</Label>
-                <Input
-                  id="order"
-                  type="number"
-                  value={formData.order || ''}
-                  onChange={(e) => setFormData((prev: any) => ({ ...prev, order: parseInt(e.target.value) }))}
-                  placeholder="Enter display order"
-                />
-              </div>
-
-              <div>
                 <Label>Slideshow Image</Label>
                 <div className="mt-2">
                   <input
@@ -1054,8 +1019,17 @@ export function RestructuredAdminPanel() {
                   Cancel
                 </Button>
                 <Button 
-                  onClick={() => createSlideshowMutation.mutate(formData)}
-                  disabled={createSlideshowMutation.isPending || !formData.title || !formData.imageUrl}
+                  onClick={() => {
+                    const slideshowData = {
+                      imageUrl: formData.imageUrl,
+                      title: '',
+                      subtitle: '',
+                      order: (slideshowImages.length + 1),
+                      isActive: true
+                    };
+                    createSlideshowMutation.mutate(slideshowData);
+                  }}
+                  disabled={createSlideshowMutation.isPending || !formData.imageUrl}
                 >
                   {createSlideshowMutation.isPending ? 'Creating...' : 'Add Image'}
                 </Button>

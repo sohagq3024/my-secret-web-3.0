@@ -86,52 +86,11 @@ export function Slideshow() {
                 }}
                 className="absolute inset-0"
               >
-                <div
-                  className="w-full h-full bg-cover bg-center bg-no-repeat"
-                  style={{
-                    backgroundImage: `linear-gradient(rgba(17, 24, 39, 0.7), rgba(6, 78, 59, 0.5)), url(${slide.imageUrl})`,
-                  }}
-                >
-                  <div className="absolute inset-0 matrix-bg"></div>
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <motion.div 
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3, duration: 0.6 }}
-                      className="text-center text-green-100 px-4"
-                    >
-                      <motion.h2 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
-                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text"
-                      >
-                        {slide.title}
-                      </motion.h2>
-                      <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7, duration: 0.6 }}
-                        className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 text-green-300/80"
-                      >
-                        {slide.subtitle}
-                      </motion.p>
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.9, duration: 0.5 }}
-                      >
-                        <Button
-                          onClick={handleGetStarted}
-                          className="cyber-button text-sm sm:text-base md:text-lg px-4 py-2 sm:px-6 sm:py-3 md:px-10 md:py-4 hover:shadow-green-500/25"
-                        >
-                          <span className="mr-2">🔓</span>
-                          Access Portal
-                        </Button>
-                      </motion.div>
-                    </motion.div>
-                  </div>
-                </div>
+                <img
+                  src={slide.imageUrl}
+                  alt="Slideshow"
+                  className="w-full h-full object-cover"
+                />
               </motion.div>
             )
           ))}
