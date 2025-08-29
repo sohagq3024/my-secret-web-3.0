@@ -36,7 +36,7 @@ export function Slideshow() {
 
   if (showLoading) {
     return (
-      <section className="relative h-[70vh] hero-gradient flex items-center justify-center">
+      <section className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] hero-gradient flex items-center justify-center">
         <div className="absolute inset-0 matrix-bg"></div>
         <LoadingScreen 
           message="Loading slideshow..." 
@@ -49,16 +49,16 @@ export function Slideshow() {
 
   if (slides.length === 0) {
     return (
-      <section className="relative h-[70vh] hero-gradient flex items-center justify-center">
+      <section className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] hero-gradient flex items-center justify-center">
         <div className="absolute inset-0 matrix-bg"></div>
-        <div className="relative text-center text-green-100 z-10">
-          <h2 className="text-6xl font-bold mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
+        <div className="relative text-center text-green-100 z-10 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
             Premium Content Awaits
           </h2>
-          <p className="text-xl mb-8 text-green-300/80">Exclusive access to encrypted digital content</p>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 text-green-300/80">Exclusive access to encrypted digital content</p>
           <Button
             onClick={handleGetStarted}
-            className="cyber-button text-lg px-10 py-4 hover:shadow-green-500/25"
+            className="cyber-button text-sm sm:text-base md:text-lg px-4 py-2 sm:px-6 sm:py-3 md:px-10 md:py-4 hover:shadow-green-500/25"
           >
             <span className="mr-2">🔓</span>
             Access Portal
@@ -70,7 +70,7 @@ export function Slideshow() {
 
   return (
     <>
-      <section className="relative h-[70vh] overflow-hidden">
+      <section className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
         <AnimatePresence mode="wait">
           {slides.map((slide, index) => (
             index === currentSlide && (
@@ -98,13 +98,13 @@ export function Slideshow() {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3, duration: 0.6 }}
-                      className="text-center text-green-100"
+                      className="text-center text-green-100 px-4"
                     >
                       <motion.h2 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.6 }}
-                        className="text-6xl font-bold mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text"
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text"
                       >
                         {slide.title}
                       </motion.h2>
@@ -112,7 +112,7 @@ export function Slideshow() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.6 }}
-                        className="text-xl mb-8 text-green-300/80"
+                        className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 text-green-300/80"
                       >
                         {slide.subtitle}
                       </motion.p>
@@ -123,7 +123,7 @@ export function Slideshow() {
                       >
                         <Button
                           onClick={handleGetStarted}
-                          className="cyber-button text-lg px-10 py-4 hover:shadow-green-500/25"
+                          className="cyber-button text-sm sm:text-base md:text-lg px-4 py-2 sm:px-6 sm:py-3 md:px-10 md:py-4 hover:shadow-green-500/25"
                         >
                           <span className="mr-2">🔓</span>
                           Access Portal
@@ -138,14 +138,14 @@ export function Slideshow() {
         </AnimatePresence>
         
         {/* Slide indicators */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:space-x-2">
           {slides.map((_, index) => (
             <motion.button
               key={index}
               onClick={() => setCurrentSlide(index)}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide
                   ? "bg-white scale-125"
                   : "bg-white/50 hover:bg-white/75"

@@ -200,6 +200,16 @@
            hover:border-green-400/50 hover:shadow-[0_0_25px_rgba(16,185,129,0.3)]
            hover:scale-105;
   }
+
+  /* Scrollbar hiding for mobile navigation */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer utilities {

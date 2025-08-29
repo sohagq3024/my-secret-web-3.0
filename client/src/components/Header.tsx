@@ -132,27 +132,27 @@ export function Header() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo and Search Section */}
-            <div className="flex items-center space-x-6 flex-1">
+            <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-6 flex-1">
               {/* Logo */}
-              <Link href="/" className="flex items-center space-x-3 group">
+              <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
                 <div className="relative">
                   <img 
                     src={logoImage} 
                     alt="Secret Web"
-                    className="w-10 h-10 rounded-lg border border-green-500/30 group-hover:border-green-400/50 transition-all duration-300"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg border border-green-500/30 group-hover:border-green-400/50 transition-all duration-300"
                   />
                   <div className="absolute inset-0 bg-green-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
+                  <span className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent neon-text">
                     Secret Web
                   </span>
-                  <span className="text-xs text-green-300/70 -mt-1">Premium Digital Content</span>
+                  <span className="text-xs text-green-300/70 -mt-1 hidden sm:block">Premium Digital Content</span>
                 </div>
               </Link>
 
               {/* Search Bar - Next to Logo */}
-              <div className="hidden md:flex flex-1 max-w-md" ref={searchRef}>
+              <div className="hidden lg:flex flex-1 max-w-md" ref={searchRef}>
                 <div className="relative w-full">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
                   <Input
@@ -268,38 +268,38 @@ export function Header() {
 
         {/* Navigation Bar - Always visible below header */}
         <div className="bg-background/90 backdrop-blur-xl border-b border-green-500/20">
-          <div className="container mx-auto px-4">
-            <nav className="flex items-center justify-center py-4">
-              <div className="flex items-center space-x-8">
+          <div className="container mx-auto px-2 sm:px-4">
+            <nav className="flex items-center justify-center py-2 sm:py-4">
+              <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-8 overflow-x-auto scrollbar-hide">
                 {navigation.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 ${
+                    className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-1 sm:space-x-2 whitespace-nowrap text-sm sm:text-base ${
                       location === item.href
                         ? "bg-green-600/30 text-green-100 border border-green-500/50 shadow-lg"
                         : "text-green-300 hover:text-green-100 hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
                     }`}
                     data-testid={`nav-${item.label.toLowerCase()}`}
                   >
-                    <div className={`w-2 h-2 rounded-full ${
+                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
                       location === item.href ? "bg-green-400" : "bg-green-500/30"
                     }`}></div>
-                    <span>{item.label}</span>
+                    <span className="text-xs sm:text-sm md:text-base">{item.label}</span>
                   </Link>
                 ))}
                 {user && user.role === "admin" && (
                   <Link
                     href="/admin"
-                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 ${
+                    className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-1 sm:space-x-2 whitespace-nowrap text-sm sm:text-base ${
                       location === "/admin"
                         ? "bg-purple-600/30 text-purple-100 border border-purple-500/50 shadow-lg"
                         : "text-purple-300 hover:text-purple-100 hover:bg-purple-600/20 border border-transparent hover:border-purple-500/30"
                     }`}
                     data-testid="nav-admin"
                   >
-                    <Shield className="w-4 h-4" />
-                    <span>Admin</span>
+                    <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="text-xs sm:text-sm md:text-base">Admin</span>
                   </Link>
                 )}
               </div>
