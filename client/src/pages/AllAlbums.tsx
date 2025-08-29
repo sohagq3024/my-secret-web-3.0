@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { Album } from "@shared/schema";
-import { Header } from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,6 @@ export function AllAlbums() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="content-grid">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -46,8 +44,6 @@ export function AllAlbums() {
   return (
     <>
       <div className="min-h-screen bg-background">
-        <Header />
-        
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
