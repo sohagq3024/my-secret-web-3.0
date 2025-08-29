@@ -129,7 +129,7 @@ export function Header() {
 
   return (
     <>
-      <header className="bg-background/95 backdrop-blur-xl border-b border-green-500/30">
+      <header className="bg-background/95 backdrop-blur-xl border-b border-green-500/30 relative z-40">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo and Search Section */}
@@ -166,7 +166,7 @@ export function Header() {
                   
                   {/* Search Results Dropdown */}
                   {showSearchResults && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-xl border border-green-500/20 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-xl border border-green-500/20 rounded-xl shadow-2xl z-[9999] max-h-80 overflow-y-auto">
                       {searchResults.length > 0 ? (
                         <div className="py-2">
                           <div className="px-4 py-2 text-xs text-green-400/60 border-b border-green-500/10">
@@ -286,7 +286,7 @@ export function Header() {
         </div>
 
         {/* Navigation Bar - Always visible below header */}
-        <div className="bg-background/90 backdrop-blur-xl border-b border-green-500/20">
+        <div className="bg-background/90 backdrop-blur-xl border-b border-green-500/20 relative z-40">
           <div className="container mx-auto px-2 sm:px-4">
             <nav className="flex items-center justify-center py-2 sm:py-4">
               <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-8 overflow-x-auto scrollbar-hide">
@@ -328,7 +328,7 @@ export function Header() {
 
         {/* Mobile Search Modal */}
         {showSearchResults && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-green-500/20 z-50">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-green-500/20 z-[9999]">
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="relative flex-1">
