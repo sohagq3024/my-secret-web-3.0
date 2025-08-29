@@ -61,9 +61,6 @@ export function Home() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent neon-text mb-2 sm:mb-4">
                     ✨ Featured Profiles
                   </h2>
-                  <p className="text-green-300/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
-                    Discover amazing personalities and their exclusive content collections
-                  </p>
                   {profiles.length > 8 && (
                     <Link href="/profiles">
                       <Button className="glass-button mt-4 sm:mt-6 text-sm sm:text-base">
