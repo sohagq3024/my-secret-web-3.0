@@ -38,7 +38,7 @@ export function Home() {
   };
 
   const handleAlbumClick = (album: Album) => {
-    window.location.href = `/content/album/${album.id}`;
+    window.location.href = `/album/${album.id}`;
   };
 
   const handleVideoClick = (video: Video) => {
