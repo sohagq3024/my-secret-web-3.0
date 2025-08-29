@@ -152,15 +152,15 @@ export function Header() {
                 </div>
               </Link>
 
-              {/* Search Bar - Next to Logo */}
-              <div className="hidden lg:flex flex-1 max-w-md" ref={searchRef}>
+              {/* Search Bar - Always visible next to Logo */}
+              <div className="flex flex-1 max-w-xs sm:max-w-sm md:max-w-md" ref={searchRef}>
                 <div className="relative w-full">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
                   <Input
-                    placeholder="Search profiles, albums, videos..."
+                    placeholder="Search..."
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="pl-12 pr-4 py-2 bg-black/30 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl transition-all duration-300 hover:bg-black/40 focus:bg-black/50 w-full"
+                    className="pl-10 pr-4 py-2 bg-black/30 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-lg transition-all duration-300 hover:bg-black/40 focus:bg-black/50 w-full text-sm"
                     data-testid="search-input"
                   />
                   
@@ -202,18 +202,6 @@ export function Header() {
 
             {/* User Actions and Hamburger Menu */}
             <div className="flex items-center space-x-2 sm:space-x-4">
-              {/* Mobile Search Button */}
-              <div className="lg:hidden">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowSearchResults(!showSearchResults)}
-                  className="text-green-400 hover:text-green-300 hover:bg-green-600/20 p-2"
-                  data-testid="mobile-search-toggle"
-                >
-                  <Search className="w-4 h-4" />
-                </Button>
-              </div>
 
               {/* Membership Status */}
               {user && (
@@ -326,68 +314,6 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Search Modal */}
-        {showSearchResults && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-green-500/20 z-[9999]">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500/60 w-4 h-4" />
-                  <Input
-                    placeholder="Search profiles, albums, videos..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="pl-12 pr-4 py-3 bg-black/30 border-green-500/20 text-green-100 placeholder-green-400/50 focus:border-green-400/40 focus:ring-green-400/20 rounded-xl transition-all duration-300 hover:bg-black/40 focus:bg-black/50 w-full"
-                    data-testid="mobile-search-input"
-                    autoFocus
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setShowSearchResults(false);
-                    setSearchQuery("");
-                  }}
-                  className="text-green-400 hover:text-green-300 hover:bg-green-600/20 p-2"
-                  data-testid="mobile-search-close"
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              {/* Mobile Search Results */}
-              {searchQuery.length >= 2 && (
-                <div className="bg-black/90 backdrop-blur-xl border border-green-500/20 rounded-xl shadow-2xl max-h-64 overflow-y-auto">
-                  {searchResults.length > 0 ? (
-                    <div className="py-2">
-                      {searchResults.map((result) => (
-                        <button
-                          key={result.id}
-                          onClick={() => {
-                            handleSearchResultClick(result.href);
-                            setShowSearchResults(false);
-                          }}
-                          className="w-full px-4 py-3 text-left hover:bg-green-600/10 transition-colors flex items-center justify-between group"
-                          data-testid={`mobile-search-result-${result.type.toLowerCase()}-${result.id.split('-')[1]}`}
-                        >
-                          <div className="flex flex-col">
-                            <span className="text-green-100 group-hover:text-green-50">{result.title}</span>
-                            <span className="text-xs text-green-400/60">{result.type}</span>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="px-4 py-8 text-center text-green-400/60">
-                      No results found for "{searchQuery}"
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </header>
 
       <AuthModal 
